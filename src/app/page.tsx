@@ -3,10 +3,35 @@ import { FaChevronDown } from "react-icons/fa";
 import dynamic from 'next/dynamic'
 import MailingList from "./components/_shared/MailingList";
 import CustomButton from "./components/_shared/ui/CustomButton";
+import ArticleComponent from "./components/news/Article";
+import { useEffect, useState } from "react";
+import type { Article } from "@/lib/articles";
+import TourDates from "./components/_shared/shows/TourDates";
 // Dynamically import the ReactPlayer component
 const ReactPlayer = dynamic(() => import("react-player"), { ssr: false });
 
 export default function Home() {
+  const [articles, setArticles] = useState([]);
+
+useEffect(() => {
+  const fetchArticles = async () => {
+    try {
+      const response = await fetch('/api/articles');
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      const data = await response.json();
+      setArticles(data);
+    } catch (error) {
+      console.error('Error fetching articles:', error);
+    }
+  };
+
+  fetchArticles();
+}, []);
+
+
+
   return (
       <main id="home" className="flex flex-col w-full items-center h-screen relative" style={{ backgroundImage: "url('/images/uploads/jwb-fond_noir.webp')" }}>
         <section className="w-full flex flex-col px-10 md:flex-row md:justify-start md:ml-52 min-h-screen md:mt-5 relative">
@@ -64,18 +89,38 @@ export default function Home() {
             <FaChevronDown className="text-white" />
           </div>
         </section>
+        {/* MAILING LIST */}
         <section className="w-full">
           <MailingList />
         </section>
-        <section className="bg-cover" style={{ backgroundImage: "url('/images/uploads/ban-eyes.webp')" }}>
+        <section 
+          className="relative bg-cover bg-center py-10" 
+          style={{ 
+            backgroundImage: "url('/images/uploads/ban-eyes.webp')",
+          }}>
+            
           {/* LATEST NEWS */}
-          <div className="">
+          <div className="z-40">
             <div className="z-40 text-white">
               <p className="text-red-600">Latest</p>
               <h2 className="text-[#ebe9db] font-roboto">News</h2>
-              {/* Add your form or input fields here */}
+              <hr className="border border-red-600"/>
+              <div>
+                {articles.map((article: Article) => (
+                  <ArticleComponent
+                    key={article.id}
+                    title={article.title}
+                    imageUrl={article.imageUrl}
+                    link={`/news/${article.slug}`}
+                  />
+                ))}
+              </div>
             </div>
           </div>
+        </section>
+        {/* UPCOMING TOUR DATES */}
+        <section className="w-full py-10">
+          <TourDates />
         </section>
       </main>
   );

@@ -12,7 +12,8 @@ const MailingList = () => {
 
   return (
     <section className="flex flex-col items-center justify-center w-full py-10 relative">
-      <div className="flex flex-col items-center z-40 text-white">
+      <hr className="border border-red-600 w-full"/>
+      <div className="flex flex-col items-center z-40 text-white text-center mt-4">
         <h2 className="text-[#ebe9db] font-roboto">Mailing list</h2>
         <p className="text-red-600 mb-6">Stay updated with Jenny with the band</p>
         {/* Add your form or input fields here */}
