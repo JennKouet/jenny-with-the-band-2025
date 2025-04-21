@@ -34,6 +34,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
+
         className={`${roboto.className} ${Horbse.className} ${permanentMarker.className} antialiased`}
       >
         <NavBar />
