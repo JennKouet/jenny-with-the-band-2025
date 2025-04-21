@@ -1,26 +1,114 @@
 @import "tailwindcss";
+@tailwind utilities;
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@layer base {
+  @font-face {
+    font-family: 'Horbse-Textured';
+    src: local('Horbse-Textured'), url('/fonts/Horbse-Textured.woff') format('woff');
+    font-weight: 500;
+  }
+  @font-face {
+      font-family: 'PowellAntique-Bold';
+      src: local('PowellAntique-Bold'), url('/fonts/PowellAntique-Bold.ttf') format('truetype');
+  }
+  @font-face {
+      font-family: 'PowellAntique';
+      src: local('PowellAntique'), url('/fonts/PowellAntique.ttf') format('truetype');
+  }
+  @font-face {
+      font-family: 'PermanentMarker-Regular';
+      src: url('/fonts/PermanentMarker-Regular.ttf') format('truetype');
+      font-weight: normal;
+      font-style: normal;
+  }
+  html, body {
+    margin: 0;
+    height: 100vh;
+    color: #ebe9db;
+  }
+  h1, h2{
+    @apply text-5xl;
+    font-family: 'Horbse-Textured', cursive;
+  }
+  h3 {
+    @apply text-4xl;
+    font-family: 'PermanentMarker-Regular', cursive;
+  }
+  h4 {
+    @apply font-bold text-3xl;
+    font-family: 'PermanentMarker-Regular', cursive;
+  }
+  a{
+    @apply text-[#ebe9db];
+  }
+  section {
+    @apply bg-black w-full px-10;
   }
 }
-
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@layer utilities {
+  .bm-menu {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    padding-top: 2rem !important;
+    background-color: rgba(0, 0, 0, 0.80) !important;
+  }
+  
+  .bm-item {
+    text-align: center !important;
+    width: 100% !important;
+    margin-bottom: 1rem;
+    font-size: 1.5rem;
+    color: white;
+  }
+  .bm-burger-button {
+    position: fixed;
+    width: 26px;
+    height: 20px;
+    right: 20px;
+    top: 20px;
+    z-index: 1000;
+  }
+  
+  .bm-burger-bars {
+    background: white !important;
+  }
+  
+  .bm-cross-button {
+    height: 24px;
+    width: 24px;
+  }
+  
+  .bm-cross {
+    background: white !important;
+  }
+  .bm-overlay {
+    background: rgba(0, 0, 0, 0.7) !important; /* 👈 fond sombre */
+  }
+  .img-conf {
+    @apply relative w-full m-0;
+  }
+  .command-button {
+    @apply text-xl rounded-md p-2 md:text-2xl;
+    color: #ebe9db !important;
+    background-color: black;
+    border: 2px solid #ebe9db;
+  }
+  .breadcrumb-menu {
+    @apply hidden md:flex md:flex-row md:items-center md:justify-center text-xl pb-10;
+    font-family: 'Horbse-Textured', cursive;
+    background-color: black;
+    padding: 1rem;
+    color: white;
+    a {
+      color: white;
+    }
+    a:active {
+      color: red;
+    }
+    a:visited {
+      color: white;
+    }
+  }
 }
