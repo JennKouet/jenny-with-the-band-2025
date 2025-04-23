@@ -41,15 +41,26 @@ const NavBar = () => {
       }, []);
 
     return (
-        <header className={`fixed top-0 w-full text-white z-50 ${isScroll ? 'bg-black' : 'bg-transparent'} transition-all duration-300`}>
-            <div className="flex flex-col items-center md:flex-row md:justify-between px-4 py-2">
-            {/* Logo */}
-            <div className="flex justify-center md:justify-start items-center">
+        <header className={`fixed top-0 w-full text-white z-50 ${isScroll ? 'bg-black' : ''} transition-all duration-300 ease-in-out`}>
+            <div className="flex flex-row justify-between items-center px-4 py-2">
+            {/* Logo mobile */}
+            <div className="w-full flex md:justify-start items-center md:hidden">
+                <Image
+                src="/images/uploads/logo-jwb-detour-new.webp"
+                alt="Jenny with the Band logo"
+                width={180}
+                height={50}
+                className="object-cover"
+                />
+            </div>
+
+             {/* Logo Desktop */}
+             <div className="w-full hidden md:flex md:justify-start items-center">
                 <Image
                 src="/images/uploads/logo-jwb-detour-new.webp"
                 alt="Jenny with the Band logo"
                 width={340}
-                height={140}
+                height={160}
                 className="object-cover"
                 />
             </div>
@@ -75,7 +86,7 @@ const NavBar = () => {
             </nav>
     
             {/* Mobile Nav */}
-            <div className="block md:hidden mt-2 bg-red-900">
+            <div className="block md:hidden bg-red-900">
                 <Menu right isOpen={menuOpen} onStateChange={({ isOpen }) => setMenuOpen(isOpen)} 
                 styles={{
                     bmMenu: {

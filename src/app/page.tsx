@@ -12,6 +12,16 @@ const ReactPlayer = dynamic(() => import("react-player"), { ssr: false });
 
 export default function Home() {
   const [articles, setArticles] = useState([]);
+  const [selectedCardId, setSelectedCardId] = useState<number | null>(null);
+
+  const handleMouseEnter = (cardId: number) => {
+    setSelectedCardId(cardId);
+  };
+
+  const handleMouseLeave = () => {
+    setSelectedCardId(null);
+  };
+
 
 useEffect(() => {
   const fetchArticles = async () => {
@@ -30,44 +40,33 @@ useEffect(() => {
   fetchArticles();
 }, []);
 
+useEffect(() => {
+      
+}, [selectedCardId, setSelectedCardId])
+
+
+
 
 
   return (
       <main id="home" className="flex flex-col w-full items-center h-screen relative" style={{ backgroundImage: "url('/images/uploads/jwb-fond_noir.webp')" }}>
-        <section className="w-full flex flex-col px-10 md:flex-row md:justify-start md:ml-52 min-h-screen md:mt-5 relative">
+        <section className="w-full flex flex-col px-2 md:px-0 md:flex-row md:justify-start min-h-screen md:relative md:overflow-x-hidden">
           {/* BACKGROUND IMAGE */}
-          <div
-            className="md:w-1/2 w-full h-full bg-cover bg-no-repeat bg-top hidden md:block"
-            style={{ backgroundImage: "url('/images/uploads/illu-album.webp')" }}
-          />
-          {/* BACKGROUND FILTER */}
-          {/* <div className="w-full absolute top-0 left-0 h-screen bg-black/30 bg-cover bg-right z-30 md:bg-black/40"></div> */}
+            <ReactPlayer
+              url="/images/main-video-web3.webm"
+              playing
+              loop
+              muted
+              width="100%"
+              height="100%"
+              className="object-cover w-full h-full md:block md:absolute md:top-0"
+            />
       
-          <div className="flex-1 flex items-center justify-center z-40 text-white w-full mb-6">
-            <div className="flex flex-col items-center md:items-start">
-                <h2 className="text-[#ebe9db]">New Album</h2>
+          <div className="flex items-center pt-20 md:pl-20 z-40 text-white w-full mb-6">
+            <div className="flex flex-col">
+                <h2 className="text-[#ebe9db] text-3xl">New Album</h2>
                 <h3 className="text-red-600">On vinyl splatter</h3>
-                  <div className="flex flex-row justify-center my-5 w-full md:hidden">
-                    <ReactPlayer
-                      url="https://jwb-medias.s3.eu-west-3.amazonaws.com/pubvinyle_2+(1).mov"
-                      playing
-                      muted
-                      width="100%"
-                      height="100%"
-                      className=""
-                    />
-                  </div>
-                  <div className="md:flex md:flex-row md:justify-center md:mb-5 md:p-10 md:w-full hidden">
-                    <ReactPlayer
-                      url="https://jwb-medias.s3.eu-west-3.amazonaws.com/pubvinyle_2+(1).mov"
-                      playing
-                      muted
-                      width="70%"
-                      height="70%"
-                      className=""
-                    />
-                  </div>
-                  <div className="flex flex-col items-center md:w-full md:mt-2">
+                  <div className="flex flex-col md:w-full md:mt-2">
                     <a href="https://li.sten.to/jennywiththeband" target="_blank">
                       <CustomButton 
                         text="Listen on Streaming"
@@ -81,13 +80,33 @@ useEffect(() => {
                       />
                     </a>
                   </div>
-              </div>
+                  <div className="flex flex-row my-5 w-full md:hidden">
+                    <ReactPlayer
+                      url="https://jwb-medias.s3.eu-west-3.amazonaws.com/pubvinyle_2+(1).mov"
+                      playing
+                      muted
+                      width="100%"
+                      height="100%"
+                      className=""
+                    />
+                  </div>
+                  <div className="md:flex md:flex-row md:mb-5 md:py-10 md:w-full hidden">
+                    <ReactPlayer
+                      url="https://jwb-medias.s3.eu-west-3.amazonaws.com/pubvinyle_2+(1).mov"
+                      playing
+                      muted
+                      width={300}
+                      height="auto"
+                      className=""
+                    />
+                  </div>
             </div>
-        
-          <div className="z-40 flex flex-col self-start md:left-1/2 md:transform md:items-center text-white font-body">
+          </div>
+          <div className="z-40 flex flex-col self-end md:items-center md:w-1/3 -mt-10 md:mt-0 md:bottom-0 md:pb-20 text-white font-body">
             <p>scroll to continue</p>
             <FaChevronDown className="text-white" />
           </div>
+         
         </section>
         {/* MAILING LIST */}
         <section className="w-full">
@@ -105,14 +124,16 @@ useEffect(() => {
               <p className="text-red-600">Latest</p>
               <h2 className="text-[#ebe9db] font-roboto">News</h2>
               <hr className="border border-red-600"/>
-              <div>
-                {articles.map((article: Article) => (
-                  <ArticleComponent
-                    key={article.id}
-                    title={article.title}
-                    imageUrl={article.imageUrl}
-                    link={`/news/${article.slug}`}
-                  />
+              <div className="md:grid md:grid-cols-2 md:gap-4 md:mt-5 md:w-2/3 mt-2">
+                {articles.map((article: Article, index) => (
+                  <div key={article.id} onMouseEnter={() => handleMouseEnter(index)} onMouseLeave={handleMouseLeave}>
+                    <ArticleComponent
+                      title={article.title}
+                      imageUrl={article.imageUrl}
+                      link={`/news/${article.slug}`}
+                      isActive={index === selectedCardId}
+                    />
+                  </div>
                 ))}
               </div>
             </div>
