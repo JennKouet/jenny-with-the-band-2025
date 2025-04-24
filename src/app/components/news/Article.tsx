@@ -12,7 +12,7 @@ export interface ArticleProps {
 
 const Article = ({title, imageUrl, link, isActive}: ArticleProps) => {
     return (
-        <div className={`${isActive ? "bg-red-600" : "bg-black"} border-y border-red-600  mt-4 flex flex-col items-center rounded-t-xl px-4 py-6`}>
+        <div className={`${isActive ? "bg-red-600" : "bg-black"} border-t-4 border-red-600  mt-4 flex flex-col items-center rounded-t-xl px-4 py-6`}>
             {/* IMAGE */}
             <div>
                 <Image

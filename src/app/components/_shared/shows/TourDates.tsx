@@ -65,17 +65,17 @@ const TourDates = () => {
             <p className="text-red-600">Past / Upcoming</p>
             <h2 className="text-[#ebe9db] font-roboto">Tour Dates</h2>
             <hr className="border border-red-600"/>
-            <div className='px-20'>
+            <div className='md:px-20'>
             <ul className='w-full'>
                     {showsPast.map((show) => (
-                        <li key={show.id} className='flex flex-row justify-between items-center text-white my-4 md:text-2xl'>
+                        <li key={show.id} className='flex flex-row justify-between md:items-center text-white my-4 md:text-2xl'>
                             <div className='mr-4 w-1/4 text-left font-[roboto] text-red-600 font-extrabold'><p>{new Date(show.datetime).toLocaleDateString('fr-FR')}</p></div>
                             <div className='w-1/4 font-[roboto]'><p>{show.venue?.name}</p></div>
                             <div className='w-2/4 text-right font-[roboto] font-bold'><p>{show.venue?.city} ({show.venue?.postal_code})</p></div>
                         </li>
                     ))}
                     {showsList.map((show) => (
-                        <li key={show.id} className='flex flex-row justify-between items-center text-white my-4 md:text-2xl'>
+                        <li key={show.id} className='flex flex-row justify-between md:items-center text-white my-4 md:text-2xl'>
                             <div className='mr-4 w-1/4 text-left font-[roboto] text-red-600 font-extrabold'><p>{new Date(show.starts_at).toLocaleDateString('fr-FR')}</p></div>
                             <div className='w-1/4 font-[roboto]'><p>{show.venue?.name}</p></div>
                             <div className='w-2/4 text-right font-[roboto] font-bold'><p>{show.venue?.city} ({show.venue?.postal_code})</p></div>

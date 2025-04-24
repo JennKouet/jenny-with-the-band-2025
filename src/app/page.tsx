@@ -7,6 +7,7 @@ import ArticleComponent from "./components/news/Article";
 import { useEffect, useState } from "react";
 import type { Article } from "@/lib/articles";
 import TourDates from "./components/_shared/shows/TourDates";
+import InstagramFeed from "./components/_shared/InstagramFeed";
 // Dynamically import the ReactPlayer component
 const ReactPlayer = dynamic(() => import("react-player"), { ssr: false });
 
@@ -53,33 +54,20 @@ useEffect(() => {
         <section className="w-full flex flex-col px-2 md:px-0 md:flex-row md:justify-start min-h-screen md:relative md:overflow-x-hidden">
           {/* BACKGROUND IMAGE */}
             <ReactPlayer
-              url="/images/main-video-web3.webm"
+              url="/images/main-video-web4.webm"
               playing
               loop
               muted
               width="100%"
               height="100%"
-              className="object-cover w-full h-full md:block md:absolute md:top-0"
+              className="object-cover w-full h-full hidden md:block md:absolute md:top-0"
             />
       
-          <div className="flex items-center pt-20 md:pl-20 z-40 text-white w-full mb-6">
-            <div className="flex flex-col">
+          <div className="flex items-center pt-20 md:pl-20 md:mt-40 z-40 text-white w-full mb-6">
+            <div className="flex flex-col items-center justify-between">
                 <h2 className="text-[#ebe9db] text-3xl">New Album</h2>
                 <h3 className="text-red-600">On vinyl splatter</h3>
-                  <div className="flex flex-col md:w-full md:mt-2">
-                    <a href="https://li.sten.to/jennywiththeband" target="_blank">
-                      <CustomButton 
-                        text="Listen on Streaming"
-                        className="hover:bg-red-600 md:mx-2 my-1 w-[300px]"
-                      />
-                    </a>
-                    <a href="https://jenny-with-the-band.sumupstore.com/" target="_blank">
-                      <CustomButton 
-                        text="Buy Now"
-                        className="hover:bg-red-600 md:mx-2 my-1 w-[300px]"
-                      />
-                    </a>
-                  </div>
+                 
                   <div className="flex flex-row my-5 w-full md:hidden">
                     <ReactPlayer
                       url="https://jwb-medias.s3.eu-west-3.amazonaws.com/pubvinyle_2+(1).mov"
@@ -100,12 +88,27 @@ useEffect(() => {
                       className=""
                     />
                   </div>
+                  <div className="flex flex-col md:w-full md:mt-2">
+                    <a href="https://li.sten.to/jennywiththeband" target="_blank">
+                      <CustomButton 
+                        text="Listen on Streaming"
+                        className="hover:bg-red-600 md:mx-2 my-1 w-[300px]"
+                      />
+                    </a>
+                    <a href="https://jenny-with-the-band.sumupstore.com/" target="_blank">
+                      <CustomButton 
+                        text="Buy Now"
+                        className="hover:bg-red-600 md:mx-2 my-1 w-[300px]"
+                      />
+                    </a>
+                  </div>
+                  <div className="z-40 flex flex-col mt-10 items-center md:mt-20 md:bottom-0 md:pb-20 text-white font-body">
+                    <p>scroll to continue</p>
+                    <FaChevronDown className="text-white" />
+                  </div>
             </div>
           </div>
-          <div className="z-40 flex flex-col self-end md:items-center md:w-1/3 -mt-10 md:mt-0 md:bottom-0 md:pb-20 text-white font-body">
-            <p>scroll to continue</p>
-            <FaChevronDown className="text-white" />
-          </div>
+        
          
         </section>
         {/* MAILING LIST */}
@@ -140,8 +143,12 @@ useEffect(() => {
           </div>
         </section>
         {/* UPCOMING TOUR DATES */}
-        <section className="w-full py-10">
+        <section className="w-full px-4">
           <TourDates />
+        </section>
+       {/*  INSTAGRAM */}
+        <section>
+            <InstagramFeed />
         </section>
       </main>
   );
