@@ -8,6 +8,24 @@ const NavBar = () => {
     const [menuOpen, setMenuOpen] = useState(false);
     const [isScroll, setIsScroll] = useState(false);
 
+    useEffect(() => {
+      const target = document.getElementById('top-trigger');
+      if (!target) return;
+
+      const observer = new IntersectionObserver(
+          ([entry]) => {
+              setIsScroll(!entry.isIntersecting); // si "top-trigger" n'est plus visible ➔ isScroll = true
+          },
+          { threshold: 0.1 } // dès que moins de 10% du div est visible
+      );
+
+      observer.observe(target);
+
+      return () => {
+          observer.disconnect();
+      };
+  }, []);
+
     const allMenus = [
         {name: "Home", link: "/"},
         {name: "Shows", link: "/shows"},
@@ -34,6 +52,7 @@ const NavBar = () => {
             setIsScroll(false);
           }
         };
+        handleScroll();
         window.addEventListener('scroll', handleScroll);
         return () => {
           window.removeEventListener('scroll', handleScroll);

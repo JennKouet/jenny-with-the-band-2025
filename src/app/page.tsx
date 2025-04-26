@@ -8,6 +8,7 @@ import { useEffect, useState } from "react";
 import type { Article } from "@/lib/articles";
 import TourDates from "./components/_shared/shows/TourDates";
 import InstagramFeed from "./components/_shared/InstagramFeed";
+import Link from "next/link";
 // Dynamically import the ReactPlayer component
 const ReactPlayer = dynamic(() => import("react-player"), { ssr: false });
 
@@ -50,21 +51,21 @@ useEffect(() => {
 
 
   return (
-      <main id="home" className="flex flex-col w-full items-center h-screen relative" style={{ backgroundImage: "url('/images/uploads/jwb-fond_noir.webp')" }}>
-        <section className="w-full flex flex-col px-2 md:px-0 md:flex-row md:justify-start min-h-screen md:overflow-x-hidden">
+      <main id="home" className="flex flex-col w-full items-center relative" style={{ backgroundImage: "url('/images/uploads/jwb-fond_noir.webp')" }}>
+        <section className="relative w-full h-screen overflow-hidden">
           {/* BACKGROUND IMAGE */}
             <ReactPlayer
-              url="/images/main-video-web7.webm"
+              url="/images/main-video.mov"
               playing
               loop
               muted
               width="100%"
               height="100%"
               style={{objectFit: "cover"}}
-              className="object-cover w-full h-full hidden md:block md:absolute md:top-0 md:left-0"
+              className="object-cover z-0 absolute top-0 left-0"
             />
       
-          <div className="flex items-center pt-20 md:pl-60 md:mt-40 z-40 text-white w-full mb-6">
+          <div className="relative flex items-center md:pl-60 md:mt-32 z-40 text-white w-full h-full">
             <div className="flex flex-col items-center justify-between">
                 <h2 className="text-[#ebe9db] text-3xl">New Album</h2>
                 <h3 className="text-red-600">On vinyl splatter</h3>
@@ -103,7 +104,7 @@ useEffect(() => {
                       />
                     </a>
                   </div>
-                  <div className="z-40 flex flex-col mt-10 items-center md:mt-20 md:bottom-0 md:pb-20 text-white font-body">
+                  <div className="z-40 flex flex-col mt-10 items-center md:mt-20 md:bottom-20 md:pb-20 text-white font-body">
                     <p>scroll to continue</p>
                     <FaChevronDown className="text-white" />
                   </div>
@@ -117,13 +118,13 @@ useEffect(() => {
           <MailingList />
         </section>
         <section 
-          className="relative bg-cover bg-center py-10" 
+          className="relative bg-cover bg-center py-32" 
           style={{ 
-            backgroundImage: "url('/images/uploads/ban-eyes.webp')",
+            backgroundImage: "url('/images/uploads/fond-rouge.webp')",
           }}>
             
           {/* LATEST NEWS */}
-          <div className="z-40">
+          <div className="z-40 ">
             <div className="z-40 text-white">
               <p className="text-red-600">Latest</p>
               <h2 className="text-[#ebe9db] font-roboto">News</h2>
@@ -144,13 +145,29 @@ useEffect(() => {
           </div>
         </section>
         {/* UPCOMING TOUR DATES */}
-        <section className="w-full px-4">
+        <section className="w-full px-4 py-10">
           <TourDates />
+          <div className="flex flex-col items-center">
+          <Link href="/shows" target="_blank">
+            <CustomButton 
+              text="Click here to see all tour dates"
+              className="hover:bg-red-600 md:mx-2 my-1 w-[300px]"
+            />
+          </Link>
+          </div>
         </section>
        {/*  INSTAGRAM */}
         <section>
             <InstagramFeed />
         </section>
+       {/*  MERCH */}
+       <section className="relative bg-center py-32" 
+          style={{ 
+            backgroundImage: "url('/images/uploads/pub-vinyle-rectangle.webp')",
+          }}>
+          <p className="text-red-600">Official</p>
+          <h2 className="text-[#ebe9db] font-roboto">Merch Store</h2>
+       </section>
       </main>
   );
 }

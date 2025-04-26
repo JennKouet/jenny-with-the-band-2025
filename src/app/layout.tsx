@@ -35,8 +35,9 @@ export default function RootLayout({
     <html lang="en">
       <body
 
-        className={`${roboto.className} ${Horbse.className} ${permanentMarker.className} antialiased`}
+        className={`${roboto.className} ${Horbse.className} ${permanentMarker.className} antialiased bg-black`}
       >
+        <div id="top-trigger" className="h-1 w-full"></div>
         <NavBar />
         {children}
       </body>
