@@ -51,19 +51,20 @@ useEffect(() => {
 
   return (
       <main id="home" className="flex flex-col w-full items-center h-screen relative" style={{ backgroundImage: "url('/images/uploads/jwb-fond_noir.webp')" }}>
-        <section className="w-full flex flex-col px-2 md:px-0 md:flex-row md:justify-start min-h-screen md:relative md:overflow-x-hidden">
+        <section className="w-full flex flex-col px-2 md:px-0 md:flex-row md:justify-start min-h-screen md:overflow-x-hidden">
           {/* BACKGROUND IMAGE */}
             <ReactPlayer
-              url="/images/main-video-web4.webm"
+              url="/images/main-video-web7.webm"
               playing
               loop
               muted
               width="100%"
               height="100%"
-              className="object-cover w-full h-full hidden md:block md:absolute md:top-0"
+              style={{objectFit: "cover"}}
+              className="object-cover w-full h-full hidden md:block md:absolute md:top-0 md:left-0"
             />
       
-          <div className="flex items-center pt-20 md:pl-20 md:mt-40 z-40 text-white w-full mb-6">
+          <div className="flex items-center pt-20 md:pl-60 md:mt-40 z-40 text-white w-full mb-6">
             <div className="flex flex-col items-center justify-between">
                 <h2 className="text-[#ebe9db] text-3xl">New Album</h2>
                 <h3 className="text-red-600">On vinyl splatter</h3>
