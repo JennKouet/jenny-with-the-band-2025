@@ -118,13 +118,10 @@ useEffect(() => {
           <MailingList />
         </section>
         <section 
-          className="relative bg-cover bg-center py-32" 
-          style={{ 
-            backgroundImage: "url('/images/uploads/fond-rouge.webp')",
-          }}>
+          className="relative bg-cover bg-center py-32">
             
           {/* LATEST NEWS */}
-          <div className="z-40 ">
+          <div className="z-40 w-2/3 mx-auto">
             <div className="z-40 text-white">
               <p className="text-red-600">Latest</p>
               <h2 className="text-[#ebe9db] font-roboto">News</h2>

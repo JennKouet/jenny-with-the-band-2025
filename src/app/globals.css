@@ -2,7 +2,10 @@
 @tailwind utilities;
 
 @theme {
-  
+  --font-horbse: 'Horbse-Textured', cursive;
+  --font-powell-bold: 'PowellAntique-Bold', cursive;
+  --font-permanent: 'PermanentMarker-Regular', cursive;
+  --font-powell: 'PowellAntique', cursive;
 }
 
 @layer base {
