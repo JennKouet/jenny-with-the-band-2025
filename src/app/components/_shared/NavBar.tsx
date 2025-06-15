@@ -29,7 +29,7 @@ const NavBar = () => {
     const allMenus = [
         {name: "Home", link: "/"},
         {name: "Shows", link: "/shows"},
-        {name: "News", link: "/news"},
+        {name: "News", link: "/news/new-single"},
         {name: "Videos", link: "/videos"},
         {name: "Paroles", link: "/lyrics"},
         {name: "Contact", link: "/contact"},
