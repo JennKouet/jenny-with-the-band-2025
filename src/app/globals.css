@@ -1,6 +1,13 @@
 @import "tailwindcss";
 @tailwind utilities;
 
+@theme {
+  --font-horbse: 'Horbse-Textured', cursive;
+  --font-powell-bold: 'PowellAntique-Bold', cursive;
+  --font-permanent: 'PermanentMarker-Regular', cursive;
+  --font-powell: 'PowellAntique', cursive;
+}
+
 @layer base {
   @font-face {
     font-family: 'Horbse-Textured';
@@ -67,7 +74,7 @@
     width: 26px;
     height: 20px;
     right: 20px;
-    top: 20px;
+    top: 15px;
     z-index: 1000;
   }
   

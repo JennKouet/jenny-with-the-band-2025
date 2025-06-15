@@ -7,11 +7,23 @@ import ArticleComponent from "./components/news/Article";
 import { useEffect, useState } from "react";
 import type { Article } from "@/lib/articles";
 import TourDates from "./components/_shared/shows/TourDates";
+import InstagramFeed from "./components/_shared/InstagramFeed";
+import Link from "next/link";
 // Dynamically import the ReactPlayer component
 const ReactPlayer = dynamic(() => import("react-player"), { ssr: false });
 
 export default function Home() {
   const [articles, setArticles] = useState([]);
+  const [selectedCardId, setSelectedCardId] = useState<number | null>(null);
+
+  const handleMouseEnter = (cardId: number) => {
+    setSelectedCardId(cardId);
+  };
+
+  const handleMouseLeave = () => {
+    setSelectedCardId(null);
+  };
+
 
 useEffect(() => {
   const fetchArticles = async () => {
@@ -30,24 +42,35 @@ useEffect(() => {
   fetchArticles();
 }, []);
 
+useEffect(() => {
+      
+}, [selectedCardId, setSelectedCardId])
+
+
+
 
 
   return (
-      <main id="home" className="flex flex-col w-full items-center h-screen relative" style={{ backgroundImage: "url('/images/uploads/jwb-fond_noir.webp')" }}>
-        <section className="w-full flex flex-col px-10 md:flex-row md:justify-start md:ml-52 min-h-screen md:mt-5 relative">
+      <main id="home" className="flex flex-col w-full items-center relative" style={{ backgroundImage: "url('/images/uploads/jwb-fond_noir.webp')" }}>
+        <section className="relative w-full h-screen overflow-hidden">
           {/* BACKGROUND IMAGE */}
-          <div
-            className="md:w-1/2 w-full h-full bg-cover bg-no-repeat bg-top hidden md:block"
-            style={{ backgroundImage: "url('/images/uploads/illu-album.webp')" }}
-          />
-          {/* BACKGROUND FILTER */}
-          {/* <div className="w-full absolute top-0 left-0 h-screen bg-black/30 bg-cover bg-right z-30 md:bg-black/40"></div> */}
+            <ReactPlayer
+              url="/images/main-video.mov"
+              playing
+              loop
+              muted
+              width="100%"
+              height="100%"
+              style={{objectFit: "cover"}}
+              className="object-cover z-0 absolute top-0 left-0"
+            />
       
-          <div className="flex-1 flex items-center justify-center z-40 text-white w-full mb-6">
-            <div className="flex flex-col items-center md:items-start">
-                <h2 className="text-[#ebe9db]">New Album</h2>
+          <div className="relative flex items-center md:pl-60 md:mt-32 z-40 text-white w-full h-full">
+            <div className="flex flex-col items-center justify-between">
+                <h2 className="text-[#ebe9db] text-3xl">New Album</h2>
                 <h3 className="text-red-600">On vinyl splatter</h3>
-                  <div className="flex flex-row justify-center my-5 w-full md:hidden">
+                 
+                  <div className="flex flex-row my-5 w-full md:hidden">
                     <ReactPlayer
                       url="https://jwb-medias.s3.eu-west-3.amazonaws.com/pubvinyle_2+(1).mov"
                       playing
@@ -57,17 +80,17 @@ useEffect(() => {
                       className=""
                     />
                   </div>
-                  <div className="md:flex md:flex-row md:justify-center md:mb-5 md:p-10 md:w-full hidden">
+                  <div className="md:flex md:flex-row md:mb-5 md:py-10 md:w-full hidden">
                     <ReactPlayer
                       url="https://jwb-medias.s3.eu-west-3.amazonaws.com/pubvinyle_2+(1).mov"
                       playing
                       muted
-                      width="70%"
-                      height="70%"
+                      width={300}
+                      height="auto"
                       className=""
                     />
                   </div>
-                  <div className="flex flex-col items-center md:w-full md:mt-2">
+                  <div className="flex flex-col md:w-full md:mt-2">
                     <a href="https://li.sten.to/jennywiththeband" target="_blank">
                       <CustomButton 
                         text="Listen on Streaming"
@@ -81,47 +104,67 @@ useEffect(() => {
                       />
                     </a>
                   </div>
-              </div>
+                  <div className="z-40 flex flex-col mt-10 items-center md:mt-20 md:bottom-20 md:pb-20 text-white font-body">
+                    <p>scroll to continue</p>
+                    <FaChevronDown className="text-white" />
+                  </div>
             </div>
-        
-          <div className="z-40 flex flex-col self-start md:left-1/2 md:transform md:items-center text-white font-body">
-            <p>scroll to continue</p>
-            <FaChevronDown className="text-white" />
           </div>
+        
+         
         </section>
         {/* MAILING LIST */}
         <section className="w-full">
           <MailingList />
         </section>
         <section 
-          className="relative bg-cover bg-center py-10" 
-          style={{ 
-            backgroundImage: "url('/images/uploads/ban-eyes.webp')",
-          }}>
+          className="relative bg-cover bg-center py-32">
             
           {/* LATEST NEWS */}
-          <div className="z-40">
+          <div className="z-40 w-2/3 mx-auto">
             <div className="z-40 text-white">
               <p className="text-red-600">Latest</p>
               <h2 className="text-[#ebe9db] font-roboto">News</h2>
               <hr className="border border-red-600"/>
-              <div>
-                {articles.map((article: Article) => (
-                  <ArticleComponent
-                    key={article.id}
-                    title={article.title}
-                    imageUrl={article.imageUrl}
-                    link={`/news/${article.slug}`}
-                  />
+              <div className="md:grid md:grid-cols-2 md:gap-4 md:mt-5 md:w-2/3 mt-2">
+                {articles.map((article: Article, index) => (
+                  <div key={article.id} onMouseEnter={() => handleMouseEnter(index)} onMouseLeave={handleMouseLeave}>
+                    <ArticleComponent
+                      title={article.title}
+                      imageUrl={article.imageUrl}
+                      link={`/news/${article.slug}`}
+                      isActive={index === selectedCardId}
+                    />
+                  </div>
                 ))}
               </div>
             </div>
           </div>
         </section>
         {/* UPCOMING TOUR DATES */}
-        <section className="w-full py-10">
+        <section className="w-full px-4 py-10">
           <TourDates />
+          <div className="flex flex-col items-center">
+          <Link href="/shows" target="_blank">
+            <CustomButton 
+              text="Click here to see all tour dates"
+              className="hover:bg-red-600 md:mx-2 my-1 w-[300px]"
+            />
+          </Link>
+          </div>
         </section>
+       {/*  INSTAGRAM */}
+        <section>
+            <InstagramFeed />
+        </section>
+       {/*  MERCH */}
+       <section className="relative bg-center py-32" 
+          style={{ 
+            backgroundImage: "url('/images/uploads/pub-vinyle-rectangle.webp')",
+          }}>
+          <p className="text-red-600">Official</p>
+          <h2 className="text-[#ebe9db] font-roboto">Merch Store</h2>
+       </section>
       </main>
   );
 }
