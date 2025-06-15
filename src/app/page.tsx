@@ -1,20 +1,26 @@
 'use client';
+import { useEffect, useState } from "react";
 import { FaChevronDown } from "react-icons/fa";
 import dynamic from 'next/dynamic'
-import MailingList from "./components/_shared/MailingList";
+import supabase from "@/lib/supabaseClient";
+import type { ArticleProps } from "@/types/articles.types";
+import Link from "next/link";
+
+// Components
+//import MailingList from "./components/_shared/MailingList";
 import CustomButton from "./components/_shared/ui/CustomButton";
 import ArticleComponent from "./components/news/Article";
-import { useEffect, useState } from "react";
-import type { Article } from "@/lib/articles";
 import TourDates from "./components/_shared/shows/TourDates";
 import InstagramFeed from "./components/_shared/InstagramFeed";
-import Link from "next/link";
+import NewsListComponent from "./components/news/NewsList";
+
 // Dynamically import the ReactPlayer component
 const ReactPlayer = dynamic(() => import("react-player"), { ssr: false });
 
 export default function Home() {
-  const [articles, setArticles] = useState([]);
-  const [selectedCardId, setSelectedCardId] = useState<number | null>(null);
+  const [articlesFromSupa, setArticlesFromSupa] = useState<ArticleProps[]>([]);
+   const [selectedCardId, setSelectedCardId] = useState<number | null>(null);
+   const [isLoading, setLoading] = useState(true)
 
   const handleMouseEnter = (cardId: number) => {
     setSelectedCardId(cardId);
@@ -24,29 +30,27 @@ export default function Home() {
     setSelectedCardId(null);
   };
 
-
-useEffect(() => {
-  const fetchArticles = async () => {
-    try {
-      const response = await fetch('/api/articles');
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-      const data = await response.json();
-      setArticles(data);
-    } catch (error) {
-      console.error('Error fetching articles:', error);
-    }
-  };
-
-  fetchArticles();
-}, []);
-
 useEffect(() => {
       
 }, [selectedCardId, setSelectedCardId])
 
-
+// fetch articles from supabase
+useEffect(() => {
+  const fetchArticlesFromSupabase = async () => {
+    setLoading(true);
+    const { data, error } = await supabase
+      .from('Articles')
+      .select('*')
+    if (error) {
+      console.error('Error fetching articles from Supabase:', error.message);
+      return;
+    }
+    console.log("data", data);
+    setArticlesFromSupa(data as ArticleProps[]);
+    setLoading(false);
+  };
+  fetchArticlesFromSupabase();
+}, []);
 
 
 
@@ -72,7 +76,7 @@ useEffect(() => {
                  
                   <div className="flex flex-row my-5 w-full md:hidden">
                     <ReactPlayer
-                      url="https://jwb-medias.s3.eu-west-3.amazonaws.com/pubvinyle_2+(1).mov"
+                      url="/images/pubvinyle_2.mp4"
                       playing
                       muted
                       width="100%"
@@ -82,7 +86,7 @@ useEffect(() => {
                   </div>
                   <div className="md:flex md:flex-row md:mb-5 md:py-10 md:w-full hidden">
                     <ReactPlayer
-                      url="https://jwb-medias.s3.eu-west-3.amazonaws.com/pubvinyle_2+(1).mov"
+                      url="/images/pubvinyle_2.mp4"
                       playing
                       muted
                       width={300}
@@ -114,9 +118,9 @@ useEffect(() => {
          
         </section>
         {/* MAILING LIST */}
-        <section className="w-full">
+       {/*  <section className="w-full">
           <MailingList />
-        </section>
+        </section> */}
         <section 
           className="relative bg-cover bg-center py-32">
             
@@ -126,8 +130,9 @@ useEffect(() => {
               <p className="text-red-600">Latest</p>
               <h2 className="text-[#ebe9db] font-roboto">News</h2>
               <hr className="border border-red-600"/>
-              <div className="md:grid md:grid-cols-2 md:gap-4 md:mt-5 md:w-2/3 mt-2">
-                {articles.map((article: Article, index) => (
+              <div className="md:grid md:grid-cols-2 lg:grid-cols-3 lg:w-full md:gap-4 md:mt-5 md:w-2/3 mt-2">
+                {isLoading ? (
+                  articlesFromSupa.map((article: ArticleProps, index) => (
                   <div key={article.id} onMouseEnter={() => handleMouseEnter(index)} onMouseLeave={handleMouseLeave}>
                     <ArticleComponent
                       title={article.title}
@@ -135,9 +140,13 @@ useEffect(() => {
                       link={`/news/${article.slug}`}
                       isActive={index === selectedCardId}
                     />
-                  </div>
-                ))}
+                    </div>
+                  ))
+                ) : (
+                  <p className="text-white text-xl">Loading...</p>
+                )}
               </div>
+                <NewsListComponent />
             </div>
           </div>
         </section>

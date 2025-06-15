@@ -32,7 +32,7 @@ export const getArticles = async (): Promise<Article[]> => {
         },
     });
 
-    console.log("response", response.results);
+    //console.log("response", response.results);
     const articles: Article[] = (response.results as unknown as NotionArticleResult[]).map((result) => {
         const properties = result.properties;
 
