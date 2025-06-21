@@ -3,6 +3,7 @@ import { Roboto, Permanent_Marker } from "next/font/google";
 import localFont from "next/font/local";
 import "./globals.css";
 import NavBar from "./components/_shared/NavBar";
+import Footer from "./components/_shared/Footer";
 
 const Horbse = localFont({
   src: "../../public/fonts/Horbse-Textured.ttf",
@@ -40,6 +41,7 @@ export default function RootLayout({
         <div id="top-trigger" className="h-1 w-full"></div>
         <NavBar />
         {children}
+        <Footer />
       </body>
     </html>
   );
