@@ -4,7 +4,7 @@ import Image from "next/image";
 
 const ContactPage = () => {
     return ( 
-        <section className="mt-20 bg-center bg-no-repeat bg-fixed relative h-screen z-0 w-full text-white">
+        <section className="px-5 mt-20 bg-center bg-no-repeat bg-fixed relative h-screen z-0 w-full text-white">
         <div className='flex flex-row justify-center mt-4'>
        {/*  <Image 
             src="/images/uploads/bann-grey.webp"
@@ -25,7 +25,7 @@ const ContactPage = () => {
                 <li>Téléphone : +33 6 37 22 10 35</li>
             </ul>
             {/* <p>Et aussi disponible sur les réseaux sociaux :</p> */}
-            <div className="flex flex-row justify-around md:w-1/3 p-2 md:mb-8">
+            <div className="flex flex-row justify-around gap-4 md:w-1/3 p-2 md:mb-8">
                 <a href="https://www.instagram.com/jennywiththeband/" target="_blank" rel="noreferrer">
                     <Image src="/images/uploads/insta-logo.webp" alt="Instagram de Jenny With The Band" width={50} height={50} className="" />
                 </a>
