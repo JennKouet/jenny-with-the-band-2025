@@ -123,10 +123,10 @@ useEffect(() => {
           <MailingList />
         </section> */}
         <section 
-          className="relative bg-cover bg-center py-32">
+          className="relative bg-cover bg-center px-5 md:py-32">
             
           {/* LATEST NEWS */}
-          <div className="z-40 w-2/3 mx-auto">
+          <div className="z-40 md:w-2/3 mx-auto">
             <div className="z-40 text-white">
               <p className="text-red-600">Latest</p>
               <h2 className="text-[#ebe9db] font-roboto">News</h2>
@@ -144,7 +144,7 @@ useEffect(() => {
                     </div>
                   ))
                 ) : (
-                  <p className="text-white text-xl">Loading...</p>
+                  <p className="text-white text-xl"></p>
                 )}
               </div>
                 <NewsListComponent />
@@ -152,7 +152,7 @@ useEffect(() => {
           </div>
         </section>
         {/* UPCOMING TOUR DATES */}
-        <section className="w-2/3 my-20 px-4 py-10">
+        <section className="md:w-2/3 my-20 px-8 md:px-4 py-10">
           <TourDates />
           <div className="flex flex-col items-center">
           <Link href="/shows" target="_blank">
@@ -164,7 +164,7 @@ useEffect(() => {
           </div>
         </section>
        {/*  MERCH */}
-       <section className="relative bg-center py-32 pt-20 md:w-2/3" >
+       <section className="relative bg-center px-5 py-32 md:pt-20 md:w-2/3" >
           <a href="https://jenny-with-the-band.sumupstore.com/" target="_blank">
             <p className="text-red-600">Official</p>
             <h2 className="text-[#ebe9db] font-roboto">Merch Store</h2>
@@ -180,8 +180,8 @@ useEffect(() => {
           </div>
        </section>
        {/* INSTAGRAM WALL */}
-       <section className="flex flex-col items-center w-full mt-20 pt-10">
-                <h3 className="text-lg mb-4 font-horbse">Instagram <span className="text-red-600 font-bold">@Jennywiththeband</span></h3>
+       <section className="flex flex-col items-center w-full md:mt-20 pt-10">
+                <h3 className="text-lg mb-4 font-horbse">Instagram <Link href="https://www.instagram.com/jennywiththeband/" className="text-red-600 font-bold">@Jennywiththeband</Link></h3>
                 <InstagramWidgetComponent />
        </section>
       </main>

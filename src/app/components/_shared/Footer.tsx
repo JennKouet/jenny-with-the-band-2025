@@ -26,9 +26,9 @@ const Footer = () => {
 
 
     return (
-        <footer className='w-full flex flex-row justify-between items-center pt-16 pb-10 px-8' style={{ backgroundImage: "url('/images/uploads/jwb-fond_noir.webp')" }}>
-            <div className="">
-                <div className="">
+        <footer className='w-full flex flex-row gap-4 justify-between md:items-center pt-16 pb-10 px-8' style={{ backgroundImage: "url('/images/uploads/jwb-fond_noir.webp')" }}>
+         
+                <div className="flex flex-col justify-between">
                     <Image
                         src="/images/logo-jwb.png"
                         alt="Jenny with the Band logo"
@@ -36,11 +36,19 @@ const Footer = () => {
                         height={100}
                         className="object-contain w-full h-auto"
                     />
-                    <p className="">©Copyright 2025 Jenny with the band. All Rights Reserved.</p>
+                    <p className="font-horbse text-xs mt-5">Artiste signé Chez</p>
+                     <Image
+                        src="/images/uploads/cropped-muzivox-logo-01.webp"
+                        alt="Jenny with the Band logo"
+                        width={200}
+                        height={100}
+                        className="object-contain w-full h-auto"
+                    />
+                    <small className="text-xs">©Copyright 2025 Jenny with the band. All Rights Reserved.</small>
                 </div>
-            </div>
+            
             <div className="">
-                <ul className="grid grid-cols-7 gap-4">
+                <ul className="md:grid md:grid-cols-7 gap-4">
                    {footerMenus.map((menu, index) => (
                         <li key={index} className="">
                             <Link href={menu.link} className="relative cursor-pointer after:content-[''] after:absolute after:w-0 after:h-[2px] after:bg-red-600 after:bottom-0 after:left-0 hover:after:w-full after:transition-all after:duration-300">
@@ -59,13 +67,13 @@ const Footer = () => {
                     </li>
                     <li>
                         <Link href="/privacy-policies" className="relative cursor-pointer after:content-[''] after:absolute after:w-0 after:h-[2px] after:bg-red-600 after:bottom-0 after:left-0 hover:after:w-full after:transition-all after:duration-300">
-                            Privacy Policy
+                            Privacy Policies
                         </Link>
                     </li>
                 </ul>
             </div>
             <div className="">
-                 <div className="flex space-x-4 mb-2 text-sm">
+                 <div className="flex flex-col gap-4 md:gap-0 md:flex-row md:space-x-4 mb-2 text-sm">
                 {socialIcons.map((item, idx) => (
                     <a key={idx} href={item.link} target="_blank" rel="noopener noreferrer" className="hover:text-red-600">
                     {item.icon}

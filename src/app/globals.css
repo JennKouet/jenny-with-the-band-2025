@@ -49,7 +49,7 @@
     @apply text-[#ebe9db];
   }
   section {
-    @apply bg-black w-full px-10;
+    @apply bg-black w-full md:px-10;
   }
 }
 @layer utilities {
