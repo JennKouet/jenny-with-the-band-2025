@@ -2,7 +2,7 @@ import React from 'react'
 
 const PrivatePoliciesPage = () => {
     return (
-        <main className="max-w-3xl mx-auto px-4 py-10 text-gray-800">
+        <main className="max-w-3xl mx-auto px-4 py-10 text-white mt-20">
             <h1 className="text-3xl font-bold mb-6">Politique de Confidentialité</h1>
 
             <section className="mb-6">
@@ -20,14 +20,14 @@ const PrivatePoliciesPage = () => {
 
             <section className="mb-6">
                 <h2 className="text-xl font-semibold mb-2">2. Collecte de données</h2>
-                <p>
+                <div>
                 Lorsque vous naviguez sur ce site :
                 <ul className="list-disc list-inside mt-2">
                     <li>Nous ne vous demandons <strong>aucune information personnelle</strong>.</li>
                     <li>Aucun formulaire de contact, d’inscription ou de commande n’est présent.</li>
                     <li>Aucune inscription à une newsletter ou création de compte n’est possible.</li>
                 </ul>
-                </p>
+                </div>
             </section>
 
             <section className="mb-6">

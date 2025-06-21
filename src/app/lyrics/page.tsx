@@ -28,7 +28,7 @@ const LyricsPage = () => {
         //Todo: mettre un loader avant d'afficher l'image de la chanson
     }
     return ( 
-        <section className='bg-center bg-no-repeat bg-fixed relative h-auto border-2 z-0 w-full mt-20'>
+        <section className='bg-center bg-no-repeat bg-fixed relative h-auto border-2 border-red-600 z-0 w-full mt-20'>
             <div className='flex flex-col items-center'>
             <h1 className='text-white font-extrabold pt-12 px-4 pb-6 md:mb-10'>Paroles de l'Album <span className="text-red-logo">"Try to kill me"</span></h1>
                 <div className="w-2/3 flex flex-col items-center md:flex-row md:justify-between md:items-start">

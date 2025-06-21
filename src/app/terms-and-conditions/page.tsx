@@ -2,7 +2,7 @@ import React from 'react'
 
 const TermsAndConditionsPage = () => {
     return (
-        <main className="max-w-3xl mx-auto px-4 py-10 text-gray-800">
+        <main className="max-w-3xl mx-auto px-4 py-10 text-white mt-20">
       <h1 className="text-3xl font-bold mb-6">Conditions Générales d’Utilisation</h1>
 
       <section className="mb-6">
@@ -71,8 +71,8 @@ const TermsAndConditionsPage = () => {
           Pour toute question concernant les présentes Conditions Générales
           d’Utilisation, vous pouvez nous contacter à l’adresse suivante :
           <br />
-          <a href="mailto:votre-email@exemple.com" className="text-blue-600 underline">
-            votre-email@exemple.com
+          <a href="mailto:contact@jennywiththeband.com" className="text-blue-600 underline">
+            contact@jennywiththeband.com
           </a>
         </p>
       </section>
