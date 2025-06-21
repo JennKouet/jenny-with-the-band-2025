@@ -15,10 +15,14 @@ const InstagramWidgetComponent = () => {
     }, []);
     return (
         <iframe
-        src="//lightwidget.com/widgets/8f416d58199259829b5789afe1491a7e.html"
-        className="lightwidget-widget"
-        style={{ width: '100%', border: 0, overflow: 'hidden' }}
-        ></iframe>
+            src="https://cdn.lightwidget.com/widgets/8f416d58199259829b5789afe1491a7e.html"
+            className="lightwidget-widget"
+            style={{
+                width: '100%',
+                border: 0,
+                overflow: 'hidden',
+            }}
+        />
     );
 }
 
