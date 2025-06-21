@@ -171,6 +171,13 @@ useEffect(() => {
           </a>
           <hr className="border border-red-600"/>
           <ProductCardComponent />
+          <div className="w-full flex flex-row justify-center mt-16">
+            <CustomButton
+              text="See more products"
+              className="hover:bg-red-600 md:mx-2 my-1 w-[300px]"
+              onClick={() => window.open("https://jenny-with-the-band.sumupstore.com/", '_blank')}
+            />
+          </div>
        </section>
        {/* INSTAGRAM WALL */}
        <section className="flex flex-col items-center w-full mt-20 pt-10">
