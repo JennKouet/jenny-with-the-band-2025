@@ -62,18 +62,18 @@ const ShowsPage = () => {
             <h1 className='text-white font-extrabold pt-12 px-4 pb-6 md:mb-0'>Tour {previousYear + "/" + year}</h1>
               <div className='w-full md:w-2/4 p-10 md:pt-4 flex flex-row items-center justify-between'>
                   <ul className='w-full'>
-                    {showsPast.map((show) => (
-                        <li key={show.id} className='flex flex-row justify-between items-center text-white my-4 md:text-2xl'>
-                            <div className='mr-4 w-1/3 text-left font-display'><p>{new Date(show.datetime).toLocaleDateString('fr-FR')}</p></div>
-                            <div className='w-1/3'><p>{show.venue?.name}</p></div>
-                            <div className='w-1/3 text-right text-blue-duck font-bold'><p>{show.venue?.city} ({show.venue?.postal_code})</p></div>
-                        </li>
-                    ))}
                     {[...showsList]
                       .sort((a, b) => new Date(b.starts_at).getTime() - new Date(a.starts_at).getTime())
                       .map((show) => (
                         <li key={show.id} className='flex flex-row justify-between items-center text-white my-4 md:text-2xl'>
                             <div className='mr-4 w-1/3 text-left font-display'><p>{new Date(show.starts_at).toLocaleDateString('fr-FR')}</p></div>
+                            <div className='w-1/3'><p>{show.venue?.name}</p></div>
+                            <div className='w-1/3 text-right text-blue-duck font-bold'><p>{show.venue?.city} ({show.venue?.postal_code})</p></div>
+                        </li>
+                    ))}
+                    {showsPast.slice().reverse().map((show) => (
+                        <li key={show.id} className='flex flex-row justify-between items-center text-white my-4 md:text-2xl'>
+                            <div className='mr-4 w-1/3 text-left font-display'><p>{new Date(show.datetime).toLocaleDateString('fr-FR')}</p></div>
                             <div className='w-1/3'><p>{show.venue?.name}</p></div>
                             <div className='w-1/3 text-right text-blue-duck font-bold'><p>{show.venue?.city} ({show.venue?.postal_code})</p></div>
                         </li>
