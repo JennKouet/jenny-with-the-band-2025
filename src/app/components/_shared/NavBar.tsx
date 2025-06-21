@@ -32,6 +32,7 @@ const NavBar = () => {
         {name: "News", link: "/news/new-single"},
         {name: "Videos", link: "/videos"},
         {name: "Paroles", link: "/lyrics"},
+        {name: 'Shop', path: 'https://jenny-with-the-band.sumupstore.com/'},
         {name: "Contact", link: "/contact"},
     ]
 
@@ -96,7 +97,7 @@ const NavBar = () => {
                 <ul className="flex space-x-6 font-semibold text-lg font-['Horbse-Textured'] text-white">
                 {allMenus.map((menu, idx) => (
                     <li key={idx}>
-                    <a href={menu.link} className="relative after:content-[''] after:absolute after:w-0 after:h-[2px] after:bg-red-600 after:bottom-0 after:left-0 hover:after:w-full after:transition-all after:duration-300">
+                    <a href={menu.link} className="relative cursor-pointer after:content-[''] after:absolute after:w-0 after:h-[2px] after:bg-red-600 after:bottom-0 after:left-0 hover:after:w-full after:transition-all after:duration-300">
                         {menu.name}
                     </a>
                     </li>
@@ -129,7 +130,7 @@ const NavBar = () => {
                     ))}
                 </div>
                 {allMenus.map((menu, idx) => (
-                    <a key={idx} href={menu.link} className="menu-item text-white text-lg hover:text-red-600">
+                    <a key={idx} href={menu.link} className="menu-item text-white text-lg hover:text-red-600 cursor-pointer">
                     {menu.name}
                     </a>
                 ))}
