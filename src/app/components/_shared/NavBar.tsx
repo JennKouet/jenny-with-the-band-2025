@@ -32,7 +32,7 @@ const NavBar = () => {
         {name: "News", link: "/news/new-single"},
         {name: "Videos", link: "/videos"},
         {name: "Paroles", link: "/lyrics"},
-        {name: 'Shop', path: 'https://jenny-with-the-band.sumupstore.com/'},
+        {name: 'Shop', link: 'https://jenny-with-the-band.sumupstore.com/'},
         {name: "Contact", link: "/contact"},
     ]
 
