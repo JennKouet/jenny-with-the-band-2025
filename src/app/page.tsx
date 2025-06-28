@@ -70,32 +70,19 @@ useEffect(() => {
               className="object-cover z-0 absolute top-0 left-0"
             />
       
-          <div className="relative flex items-center md:pl-60 md:mt-32 z-40 text-white w-full h-full">
-            <div className="flex flex-col items-center justify-between">
-                <h2 className="text-[#ebe9db] text-3xl">New Album</h2>
-                <h3 className="text-red-600">On vinyl splatter</h3>
-                 
-                  <div className="flex flex-row my-5 w-full md:hidden">
-                    <ReactPlayer
-                      url="/images/pubvinyle_2.mp4"
-                      playing
-                      muted
-                      width="100%"
-                      height="100%"
-                      className=""
-                    />
+          <div className="relative flex items-center mt-12 md:pl-20 md:mt-32 z-40 text-white w-full h-full">
+            <div className="flex flex-col items-center justify-between w-full md:w-1/2">
+                <h2 className="text-[#ebe9db] text-3xl">New video</h2>
+                <h3 className="text-red-600">Online</h3>
+                 {/* VIDEO MOBILE */}
+                  <div className="flex flex-row my-5 w-full p-2 md:hidden">
+                    <iframe width="100%" height="230" src="https://www.youtube.com/embed/wFjqZ50I8j4?si=0iiky3P9Mx6AZVSt" title="YouTube video player" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen></iframe>
                   </div>
+                  {/* VIDEO DESKTOP */}
                   <div className="md:flex md:flex-row md:mb-5 md:py-10 md:w-full hidden">
-                    <ReactPlayer
-                      url="/images/pubvinyle_2.mp4"
-                      playing
-                      muted
-                      width={300}
-                      height="auto"
-                      className=""
-                    />
+                      <iframe width="100%" height="350" src="https://www.youtube.com/embed/wFjqZ50I8j4?si=0iiky3P9Mx6AZVSt" title="YouTube video player" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen></iframe>
                   </div>
-                  <div className="flex flex-col md:w-full md:mt-2">
+                  <div className="flex flex-col md:items-center md:w-full md:mt-2">
                     <a href="https://li.sten.to/jennywiththeband" target="_blank">
                       <CustomButton 
                         text="Listen on Streaming"

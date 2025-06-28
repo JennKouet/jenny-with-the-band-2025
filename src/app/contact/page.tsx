@@ -4,7 +4,7 @@ import Image from "next/image";
 
 const ContactPage = () => {
     return ( 
-        <section className="px-5 mt-20 bg-center bg-no-repeat bg-fixed relative h-screen z-0 w-full text-white">
+        <section className="px-5 mt-20 bg-center bg-no-repeat bg-fixed relative z-0 w-full text-white">
         <div className='flex flex-row justify-center mt-4'>
        {/*  <Image 
             src="/images/uploads/bann-grey.webp"
@@ -38,17 +38,16 @@ const ContactPage = () => {
             </div>
             <div className='flex flex-col items-center justify-center pt-11 text-xl'>
                 <h1 className='pb-4'>Booking</h1>
-                <p>Pour toutes demandes de programmation du groupe, veuillez contacter Vincent :</p>
+                <p>Pour toutes demandes de programmation du groupe, veuillez contacter Nick :</p>
                 <ul>
-                <li>Email : <a href="mailto:vincent@muzivox.com">vincent@muzivox.com</a></li>
-                    <li>Téléphone : +33 6 37 22 10 35</li>
+                <li>Email : <a href="mailto:vincent@muzivox.com">contact@jennywiththeband.com</a></li>
+                    <li>Téléphone : +33 6 78 02 88 05</li>
                 </ul>
             </div>
         </div>
         <div className='flex flex-row justify-center mt-4'>
-        <a href="https://muzivox.com/roster/jenny-with-the-band/">
         <Image 
-            src="/images/uploads/cropped-muzivox-logo-01.webp"
+            src="/images/uploads/jenn-live.webp"
             alt="photo de presse jenny with the band nantes"
             style={{
               objectFit: "contain"
@@ -57,7 +56,6 @@ const ContactPage = () => {
             height="650"
             width="650"
           />
-          </a>
         </div>
         <div className='flex flex-row justify-center items-center mt-4'>
             <h3>Dossier de presse: <a href="https://jwb-medias.s3.eu-west-3.amazonaws.com/dossier_presse_JWB.pdf" target="_blank">Cliquez Ici</a></h3>
