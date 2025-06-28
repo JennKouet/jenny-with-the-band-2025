@@ -36,14 +36,6 @@ const Footer = () => {
                         height={100}
                         className="object-contain w-full h-auto"
                     />
-                    <p className="font-horbse text-xs mt-5">Artiste signé Chez</p>
-                     <Image
-                        src="/images/uploads/cropped-muzivox-logo-01.webp"
-                        alt="Jenny with the Band logo"
-                        width={200}
-                        height={100}
-                        className="object-contain w-full h-auto"
-                    />
                     <small className="text-xs">©Copyright 2025 Jenny with the band. All Rights Reserved.</small>
                 </div>
             
