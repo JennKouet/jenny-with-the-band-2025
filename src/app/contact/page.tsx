@@ -57,10 +57,6 @@ const ContactPage = () => {
             width="650"
           />
         </div>
-        <div className='flex flex-row justify-center items-center mt-4'>
-            <h3>Dossier de presse: <a href="https://jwb-medias.s3.eu-west-3.amazonaws.com/dossier_presse_JWB.pdf" target="_blank">Cliquez Ici</a></h3>
-           
-        </div>
         </section>
      );
 }
