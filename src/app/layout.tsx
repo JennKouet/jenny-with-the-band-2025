@@ -23,7 +23,7 @@ const permanentMarker = Permanent_Marker({
 });
 
 export const metadata: Metadata = {
-  title: "Jenny With the Band 2025",
+  title: "Jenny With the Band Offical",
   description: "Site internet presentant le groupe de Rock/Blues Jenny with the band ",
 };
 
