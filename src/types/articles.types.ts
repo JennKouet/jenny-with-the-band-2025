@@ -5,5 +5,5 @@ export interface ArticleProps {
     imageUrl: string;
     slug: string;
     published: boolean;
-    createdAt?: string;
+    created_at?: string;
 }

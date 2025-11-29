@@ -1,15 +1,12 @@
 'use client';
 import { useEffect, useState } from "react";
 import { FaChevronDown } from "react-icons/fa";
-import dynamic from 'next/dynamic'
-import supabase from "@/lib/supabaseClient";
-import type { ArticleProps } from "@/types/articles.types";
+import dynamic from 'next/dynamic';
 import Link from "next/link";
 
 // Components
 //import MailingList from "./components/_shared/MailingList";
 import CustomButton from "./components/_shared/ui/CustomButton";
-import ArticleComponent from "./components/news/Article";
 import TourDates from "./components/_shared/shows/TourDates";
 import NewsListComponent from "./components/news/NewsList";
 import ProductCardComponent from "./components/_shared/ProductCard";
@@ -19,41 +16,11 @@ import InstagramWidgetComponent from "./components/_shared/InstagramWidget";
 const ReactPlayer = dynamic(() => import("react-player"), { ssr: false });
 
 export default function Home() {
-  const [articlesFromSupa, setArticlesFromSupa] = useState<ArticleProps[]>([]);
-   const [selectedCardId, setSelectedCardId] = useState<number | null>(null);
-   const [isLoading, setLoading] = useState(true)
-
-  const handleMouseEnter = (cardId: number) => {
-    setSelectedCardId(cardId);
-  };
-
-  const handleMouseLeave = () => {
-    setSelectedCardId(null);
-  };
+  const [selectedCardId, setSelectedCardId] = useState<number | null>(null);
 
 useEffect(() => {
       
-}, [selectedCardId, setSelectedCardId])
-
-// fetch articles from supabase
-useEffect(() => {
-  const fetchArticlesFromSupabase = async () => {
-    setLoading(true);
-    const { data, error } = await supabase
-      .from('Articles')
-      .select('*')
-    if (error) {
-      console.error('Error fetching articles from Supabase:', error.message);
-      return;
-    }
-    console.log("data", data);
-    setArticlesFromSupa(data as ArticleProps[]);
-    setLoading(false);
-  };
-  fetchArticlesFromSupabase();
-}, []);
-
-
+}, [selectedCardId, setSelectedCardId]);
 
   return (
       <main id="home" className="flex flex-col w-full items-center relative" style={{ backgroundImage: "url('/images/uploads/jwb-fond_noir.webp')" }}>
@@ -118,22 +85,6 @@ useEffect(() => {
               <p className="text-red-600">Latest</p>
               <h2 className="text-[#ebe9db] font-roboto">News</h2>
               <hr className="border border-red-600"/>
-              <div className="md:grid md:grid-cols-2 lg:grid-cols-3 lg:w-full md:gap-4 md:mt-5 md:w-2/3 mt-2">
-                {isLoading ? (
-                  articlesFromSupa.map((article: ArticleProps, index) => (
-                  <div key={article.id} onMouseEnter={() => handleMouseEnter(index)} onMouseLeave={handleMouseLeave}>
-                    <ArticleComponent
-                      title={article.title}
-                      imageUrl={article.imageUrl}
-                      link={`/news/${article.slug}`}
-                      isActive={index === selectedCardId}
-                    />
-                    </div>
-                  ))
-                ) : (
-                  <p className="text-white text-xl"></p>
-                )}
-              </div>
                 <NewsListComponent />
             </div>
           </div>
