@@ -1,8 +1,9 @@
 'use client';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { FaFacebookF, FaInstagram, FaSpotify, FaApple, FaYoutube } from 'react-icons/fa';
+import supabase from '@/lib/supabaseClient';
 
 const Footer = () => {
     const footerMenus = [
@@ -14,6 +15,53 @@ const Footer = () => {
         { title: 'Shop', link: 'https://jenny-with-the-band.sumupstore.com/' },
         { title: 'Contact', link: '/contact' },
     ];
+
+    const [isAuthenticated, setAuthenticated] = useState(false);
+
+    useEffect(() => {
+        const syncSession = async () => {
+            const { data } = await supabase.auth.getSession();
+            setAuthenticated(!!data.session);
+        };
+        syncSession();
+        const { data: listener } = supabase.auth.onAuthStateChange((_event, session) => {
+            setAuthenticated(!!session);
+        });
+        return () => {
+            listener.subscription.unsubscribe();
+        };
+    }, []);
+
+    const handleAdminLogin = async () => {
+        try {
+            const redirectTo =
+                typeof window !== 'undefined'
+                    ? `${window.location.origin}/auth/callback`
+                    : undefined;
+            const { error } = await supabase.auth.signInWithOAuth({
+                provider: 'google',
+                options: {
+                    redirectTo,
+                },
+            });
+            if (error) {
+                console.error('Erreur de connexion Google:', error.message);
+            }
+        } catch (authError) {
+            console.error(authError);
+        }
+    };
+
+    const handleLogout = async () => {
+        try {
+            const { error } = await supabase.auth.signOut();
+            if (error) {
+                console.error('Erreur de déconnexion:', error.message);
+            }
+        } catch (logoutError) {
+            console.error(logoutError);
+        }
+    };
     const socialIcons = [
         { icon: <FaFacebookF />, link: 'https://www.facebook.com/jennywiththeband' },
         { icon: <FaInstagram />, link: 'https://www.instagram.com/jennywiththeband/' },
@@ -72,6 +120,21 @@ const Footer = () => {
                     </a>
                 ))}
                 </div>
+                {!isAuthenticated ? (
+                    <button
+                        onClick={handleAdminLogin}
+                        className="mt-2 text-xs text-white/70 underline hover:text-red-500"
+                    >
+                        Connexion admin
+                    </button>
+                ) : (
+                    <button
+                        onClick={handleLogout}
+                        className="mt-2 text-xs text-white/70 underline hover:text-red-500"
+                    >
+                        Déconnexion
+                    </button>
+                )}
             </div>
         </footer>
     );
