@@ -16,7 +16,7 @@ const Article = ({title, imageUrl, link, isActive}: ArticleProps) => {
             {/* IMAGE */}
             <div>
                 <Image
-                    src={`/images/uploads/${imageUrl}`}
+                    src={`${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/images/articles/${imageUrl}`}
                     alt={title}
                     width={340}
                     height={140}

@@ -25,6 +25,11 @@ const permanentMarker = Permanent_Marker({
 export const metadata: Metadata = {
   title: "Jenny With the Band 2025",
   description: "Site internet presentant le groupe de Rock/Blues Jenny with the band ",
+  icons: [
+    { rel: "icon", url: "/favicon.ico" },
+    { rel: "icon", type: "image/png", sizes: "32x32", url: "/favicon-32x32.png" },
+    { rel: "icon", type: "image/png", sizes: "48x48", url: "/favicon-48x48.png" },
+  ],
 };
 
 export default function RootLayout({
@@ -35,7 +40,6 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-
         className={`${roboto.className} ${Horbse.className} ${permanentMarker.className} antialiased bg-black`}
       >
         <div id="top-trigger" className="h-1 w-full"></div>
