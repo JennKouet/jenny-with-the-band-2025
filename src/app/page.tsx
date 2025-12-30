@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { FaChevronDown } from "react-icons/fa";
 import dynamic from 'next/dynamic';
 import Link from "next/link";
+import EditableIframe from "./components/_shared/EditableIframe";
 
 // Components
 //import MailingList from "./components/_shared/MailingList";
@@ -42,13 +43,19 @@ useEffect(() => {
                 <h2 className="text-[#ebe9db] text-3xl">New video</h2>
                 <h3 className="text-red-600">Online</h3>
                  {/* VIDEO MOBILE */}
-                  <div className="flex flex-row my-5 w-full p-2 md:hidden">
-                    <iframe width="100%" height="230" src="https://www.youtube.com/embed/wFjqZ50I8j4?si=0iiky3P9Mx6AZVSt" title="YouTube video player" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen></iframe>
-                  </div>
+                  <EditableIframe
+                    tableName="HomeVideos"
+                    videoId="2"
+                    height={230}
+                    className="flex flex-row my-5 w-full p-2 md:hidden"
+                  />
                   {/* VIDEO DESKTOP */}
-                  <div className="md:flex md:flex-row md:mb-5 md:py-10 md:w-full hidden">
-                      <iframe width="100%" height="350" src="https://www.youtube.com/embed/wFjqZ50I8j4?si=0iiky3P9Mx6AZVSt" title="YouTube video player" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen></iframe>
-                  </div>
+                  <EditableIframe
+                    tableName="HomeVideos"
+                    videoId="2"
+                    height={350}
+                    className="md:flex md:flex-row md:mb-5 md:py-10 md:w-full hidden"
+                  />
                   <div className="flex flex-col md:items-center md:w-full md:mt-2">
                     <a href="https://li.sten.to/jennywiththeband" target="_blank">
                       <CustomButton 
@@ -125,3 +132,5 @@ useEffect(() => {
       </main>
   );
 }
+// https://www.youtube.com/embed/wFjqZ50I8j4?si=zM9Vd_SnifAUk4nF
+// https://www.youtube.com/embed/V3VQJgVUi0A?si=gUu__Zwd9rsFxu1t

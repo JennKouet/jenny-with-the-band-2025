@@ -1,6 +1,5 @@
 'use client'
 
-import { useSession } from 'next-auth/react'
 import { useEffect, useRef, useState } from 'react'
 import supabase from '@/lib/supabaseClient'
 import Image from 'next/image'
@@ -22,20 +21,35 @@ export default function EditableImage({
   width?: number
   height?: number
 }) {
-  const { data: session } = useSession()
   const inputRef = useRef<HTMLInputElement>(null)
   const [url, setUrl] = useState('')
   const [uploading, setUploading] = useState(false)
+  const [isAuthenticated, setAuthenticated] = useState(false)
 
 
 
   useEffect(() => {
-  const { data } = supabase.storage.from(bucket).getPublicUrl(imagePath)
-  if (data?.publicUrl) {
-    const updatedUrl = `${data.publicUrl}?t=${Date.now()}`
-    setUrl(updatedUrl)
-  }
-}, [imagePath, bucket])
+    const { data } = supabase.storage.from(bucket).getPublicUrl(imagePath)
+    if (data?.publicUrl) {
+      const updatedUrl = `${data.publicUrl}?t=${Date.now()}`
+      setUrl(updatedUrl)
+    }
+  }, [imagePath, bucket])
+
+  useEffect(() => {
+    const fetchSession = async () => {
+      const { data } = await supabase.auth.getSession()
+      setAuthenticated(!!data.session)
+    }
+    fetchSession()
+
+    const { data: listener } = supabase.auth.onAuthStateChange((_event, session) => {
+      setAuthenticated(!!session)
+    })
+    return () => {
+      listener.subscription.unsubscribe()
+    }
+  }, [])
 
 
   const handleUpload = async (file: File) => {
@@ -74,14 +88,14 @@ export default function EditableImage({
           alt={alt}
           width={width}
           height={height}
-          className={`${session ? 'cursor-pointer hover:opacity-70 transition' : ''} ${imgClassName}`}
-          onClick={() => session && inputRef.current?.click()}
+          className={`${isAuthenticated ? 'cursor-pointer hover:opacity-70 transition' : ''} ${imgClassName}`}
+          onClick={() => isAuthenticated && inputRef.current?.click()}
         />
       ) : (
         <div className="w-[400px] h-[300px] bg-gray-100 animate-pulse rounded" />
       )}
       {uploading && <p className="text-sm text-gray-500">Upload en cours...</p>}
-      {session && (
+      {isAuthenticated && (
         <input
           type="file"
           accept="image/*"
