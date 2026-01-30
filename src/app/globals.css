@@ -48,6 +48,9 @@
   a{
     @apply text-[#ebe9db];
   }
+  p{
+    font-family: 'Roboto', sans-serif;
+  }
   section {
     @apply bg-black w-full md:px-10;
   }
