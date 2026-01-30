@@ -17,18 +17,26 @@ const ArticlesPage = () => {
 useEffect(() => {
   const fetchArticlesFromSupabase = async () => {
     setLoading(true);
-    const { data, error } = await supabase
+    let query = supabase
       .from('Articles')
       .select('*')
-      .eq('slug', slug)
+      .order('created_at', { ascending: false }); // Trier par date de création décroissante
+
+    if (slug) {
+      query = query.eq('slug', slug); // Filtrer par slug si fourni
+    }
+
+    const { data, error } = await query;
     if (error) {
       console.error('Error fetching articles from Supabase:', error.message);
       return;
     }
+
     console.log("data", data);
-    setArticle(data && data.length > 0 ? (data[0] as ArticleProps) : null);
+    setArticle(data && data.length > 0 ? (data[0] as ArticleProps) : null); // Récupérer l'article
     setLoading(false);
   };
+
   fetchArticlesFromSupabase();
 }, [slug]);
 
@@ -43,7 +51,7 @@ useEffect(() => {
                         <div className="border border-red-600 text-white p-6 rounded-lg shadow-lg mt-6 w-full">
                             <div className="px-8 w-full flex justify-center">
                             <Image
-                                src={`/images/uploads/${article.imageUrl}`}
+                                src={`${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/images/articles/${article.imageUrl}`}
                                 alt={article.title}
                                 width={340}
                                 height={140}
@@ -52,7 +60,7 @@ useEffect(() => {
                             />
                             </div>
                             <h2 className="mt-8 text-center">{article.title}</h2>
-                            <p className="leading-7 mt-8">{article.description}</p>
+                            <p className="leading-7 mt-8 font-[roboto]">{article.description}</p>
                         </div>
                     )}
                 </div>

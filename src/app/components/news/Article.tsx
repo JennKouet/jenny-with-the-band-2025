@@ -31,7 +31,7 @@ const Article = ({title, imageUrl, link, isActive}: ArticleProps) => {
             <CustomButton
                 text="Read More"
                 className="hover:bg-red-600 md:mx-2 my-1 w-[160px]"
-                onClick={() => window.open(link, "_blank")}
+                path={link}
             />
         </div>
     )

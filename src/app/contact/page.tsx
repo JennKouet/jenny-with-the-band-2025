@@ -40,8 +40,8 @@ const ContactPage = () => {
         </div>
         <div className="flex flex-col items-center justify-center pt-11 text-xl">
             <h1 className='pb-4'>Contact</h1>
-            <p>Pour toutes questions n&apos;hésitez pas à nous contacter à l&apos;adresse suivante :</p>
-            <ul className='mb-10'>
+            <p className='font-[roboto] font-bold'>Pour toutes questions n&apos;hésitez pas à nous contacter à l&apos;adresse suivante :</p>
+            <ul className='mb-10 font-[roboto] font-bold'>
                 <li>Email : <a href="mailto:contact@jennywiththeband.com">contact@jennywiththeband.com</a></li>
                 <li>Téléphone : +33 6 37 22 10 35</li>
             </ul>
@@ -70,8 +70,8 @@ const ContactPage = () => {
             </div> */}
             <div className='flex flex-col items-center justify-center pt-11 text-xl'>
                 <h1 className='pb-4'>Booking</h1>
-                <p>Pour toutes demandes de programmation du groupe, veuillez contacter Nick :</p>
-                <ul>
+                <p>Pour toutes demandes de programmation du groupe, veuillez contacter <span className="font-horbse">Nick</span> :</p>
+                <ul className='mb-10 font-[roboto] font-bold'>
                 <li>Email : <a href="mailto:vincent@muzivox.com">contact@jennywiththeband.com</a></li>
                     <li>Téléphone : +33 6 78 02 88 05</li>
                 </ul>
