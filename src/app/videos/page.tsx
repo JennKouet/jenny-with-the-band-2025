@@ -22,6 +22,7 @@ useEffect(() => {
     const { data, error } = await supabase
       .from('Videos')
       .select('*')
+      .order('created_at', { ascending: false })
     if (error) {
       console.error('Error fetching videos from Supabase:', error.message);
       return;

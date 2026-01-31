@@ -6,15 +6,40 @@ import { FaFacebookF, FaInstagram, FaSpotify, FaApple, FaYoutube } from 'react-i
 import supabase from '@/lib/supabaseClient';
 
 const Footer = () => {
+    const [loading, setLoading] = useState(true);
+    const [latestSlug, setLatestSlug] = useState<string | null>(null); // Stocker le slug du dernier article
     const footerMenus = [
         { title: 'Home', link: '/' },
         { title: 'Shows', link: '/shows' },
-        { title: 'News', link: '/news/new-single' },
+        { title: "News", link: latestSlug ? `/news/${latestSlug}` : "#" },
         { title: 'Videos', link: '/videos' },
         { title: 'Paroles', link: '/lyrics' },
         { title: 'Shop', link: 'https://jenny-with-the-band.sumupstore.com/' },
         { title: 'Contact', link: '/contact' },
     ];
+
+    useEffect(() => {
+        const fetchLatestArticle = async () => {
+            const { data, error } = await supabase
+                .from('Articles')
+                .select('slug')
+                .order('created_at', { ascending: false })
+                .limit(1);
+
+            if (error) {
+                console.error('Error fetching latest article:', error.message);
+                setLoading(false); // Arrêter le chargement même en cas d'erreur
+                return;
+            }
+
+            if (data && data.length > 0) {
+                setLatestSlug(data[0].slug); // Stocker le slug du dernier article
+            }
+            setLoading(false); // Arrêter le chargement une fois les données récupérées
+        };
+
+        fetchLatestArticle();
+    }, []);
 
     const [isAuthenticated, setAuthenticated] = useState(false);
 
@@ -71,6 +96,15 @@ const Footer = () => {
     ];
 
 
+     if (loading) {
+        return (
+            <footer className="fixed top-0 w-full text-white z-50 bg-black transition-all duration-300 ease-in-out">
+                <div className="flex justify-center items-center h-16">
+                    <p className="text-white text-lg">Loading...</p>
+                </div>
+            </footer>
+        );
+    }
 
 
     return (
@@ -88,7 +122,7 @@ const Footer = () => {
                 </div>
             
             <div className="">
-                <ul className="md:grid md:grid-cols-7 gap-4">
+                <ul className="md:grid md:grid-cols-7 gap-3 font-horbse">
                    {footerMenus.map((menu, index) => (
                         <li key={index} className="">
                             <Link href={menu.link} className="relative cursor-pointer after:content-[''] after:absolute after:w-0 after:h-[2px] after:bg-red-600 after:bottom-0 after:left-0 hover:after:w-full after:transition-all after:duration-300">
