@@ -14,6 +14,8 @@ interface Show {
     starts_at: string;
     venue: Venue;
     datetime: string;
+    url?: string;
+    offers?: Array<{ url: string; type: string; status: string }>;
   }
 
 
@@ -68,10 +70,20 @@ const TourDates = () => {
             <div className='md:px-20'>
               <ul className='w-full'>
                 {showsList.slice().map((show) => (
-                    <li key={show.id} className='flex flex-row justify-between md:items-center text-white my-4 md:text-2xl'>
+                    <li key={show.id} className='flex flex-row justify-between md:items-center text-white my-4 md:text-2xl gap-4'>
                         <div className='mr-4 w-1/4 text-left font-[roboto] text-red-600 font-extrabold'><p>{new Date(show.starts_at).toLocaleDateString('fr-FR')}</p></div>
                         <div className='w-1/4 font-[roboto]'><p>{show.venue?.name}</p></div>
                         <div className='w-2/4 text-right font-[roboto] font-bold'><p>{show.venue?.city} ({show.venue?.postal_code})</p></div>
+                        {show.offers && show.offers.length > 0 && (
+                          <a 
+                            href={show.offers[0].url} 
+                            target="_blank" 
+                            rel="noopener noreferrer"
+                            className='bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded font-[roboto] text-base whitespace-nowrap'
+                          >
+                            Billets
+                          </a>
+                        )}
                     </li>
                 ))}
               </ul>
