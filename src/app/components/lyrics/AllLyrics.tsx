@@ -1,6 +1,6 @@
 'use client'
 import React, {FC} from 'react';
-import { Lyric } from '../../lyrics/page';
+import type { Lyric } from '@/types/lyrics.types';
 import Image from "next/image";
 
 interface SelectedLyricsProps {
@@ -8,7 +8,6 @@ interface SelectedLyricsProps {
 }
 
 const AllLyrics: FC<SelectedLyricsProps> = ({selectedLyrics}) => {
-    console.log("selected lyrics", selectedLyrics);
     return ( 
         <div className='p-10'>
             {selectedLyrics && (

@@ -76,7 +76,6 @@ export default function EditableImage({
 
   const onFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
-    console.log('File selected:', file)
     if (file) handleUpload(file)
   }
 
