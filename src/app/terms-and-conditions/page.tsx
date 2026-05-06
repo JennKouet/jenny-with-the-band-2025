@@ -1,4 +1,13 @@
 import React from 'react'
+import type { Metadata } from "next";
+import { createPageMetadata } from "@/lib/seo";
+
+export const metadata: Metadata = createPageMetadata({
+  title: "Conditions générales d'utilisation",
+  description: "Conditions générales d'utilisation du site Jenny With the Band.",
+  path: "/terms-and-conditions",
+  noIndex: true,
+});
 
 const TermsAndConditionsPage = () => {
     return (
