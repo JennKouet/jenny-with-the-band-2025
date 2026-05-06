@@ -1,9 +1,11 @@
 import type { Metadata } from "next";
+import "@/lib/serverLocalStorage";
 import { Roboto, Permanent_Marker } from "next/font/google";
 import localFont from "next/font/local";
 import "./globals.css";
 import NavBar from "./components/_shared/NavBar";
 import Footer from "./components/_shared/Footer";
+import { siteConfig } from "@/lib/site";
 
 const Horbse = localFont({
   src: "../../public/fonts/Horbse-Textured.ttf",
@@ -23,8 +25,42 @@ const permanentMarker = Permanent_Marker({
 });
 
 export const metadata: Metadata = {
-  title: "Jenny With the Band 2025",
-  description: "Site internet presentant le groupe de Rock/Blues Jenny with the band ",
+  metadataBase: new URL(siteConfig.url),
+  applicationName: siteConfig.name,
+  title: {
+    default: siteConfig.name,
+    template: `%s | ${siteConfig.name}`,
+  },
+  description: siteConfig.description,
+  keywords: [
+    "Jenny With the Band",
+    "Jenny with the band",
+    "groupe rock Nantes",
+    "groupe rock blues",
+    "concert rock Nantes",
+    "Try to kill me",
+  ],
+  authors: [{ name: siteConfig.name }],
+  creator: siteConfig.name,
+  publisher: siteConfig.name,
+  alternates: {
+    canonical: "/",
+  },
+  openGraph: {
+    type: "website",
+    locale: siteConfig.locale,
+    url: "/",
+    siteName: siteConfig.name,
+    title: siteConfig.name,
+    description: siteConfig.description,
+    images: [siteConfig.openGraphImage],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: siteConfig.name,
+    description: siteConfig.description,
+    images: [siteConfig.openGraphImage.url],
+  },
   icons: [
     { rel: "icon", url: "/favicon.ico" },
     { rel: "icon", type: "image/png", sizes: "32x32", url: "/favicon-32x32.png" },
@@ -38,7 +74,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="fr">
       <body
         className={`${roboto.className} ${Horbse.className} ${permanentMarker.className} antialiased bg-black`}
       >

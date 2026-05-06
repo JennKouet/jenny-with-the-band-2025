@@ -1,4 +1,13 @@
 import React from 'react'
+import type { Metadata } from "next";
+import { createPageMetadata } from "@/lib/seo";
+
+export const metadata: Metadata = createPageMetadata({
+    title: "Politique de confidentialité",
+    description: "Politique de confidentialité du site Jenny With the Band.",
+    path: "/privacy-policies",
+    noIndex: true,
+});
 
 const PrivatePoliciesPage = () => {
     return (

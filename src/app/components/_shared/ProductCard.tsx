@@ -2,7 +2,6 @@
 import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import CustomButton from '@/app/components/_shared/ui/CustomButton';
 
 const ProductCardComponent = () => {
 
@@ -36,11 +35,11 @@ const ProductCardComponent = () => {
     return (
         <div className='grid grid-cols-1 md:grid-cols-4 gap-4'>
             {ProductsList.map((product) => (
-                <Link key={product.id} href={product.link} target="_blank" className="w-full  h-full">
+                <Link key={product.id} href={product.link} target="_blank" rel="noopener noreferrer" className="w-full h-full">
                     <div key={product.id} className="w-full h-[300px]">
                         <Image
                             src={product.imageUrl}
-                            alt="Jenny with the Band products image"
+                            alt={product.title}
                             width={210}
                             height={260}
                             className="object-contain w-full h-full"
@@ -49,11 +48,9 @@ const ProductCardComponent = () => {
                     <div className="text-center text-white font-bold h-14">
                         <h3 className="text-lg">{product.title}</h3>
                     </div>
-                    <CustomButton 
-                        text="Buy now"
-                        className="mt-2 w-full bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
-                        onClick={() => window.open(product.link, '_blank')} 
-                    />
+                    <span className="block text-center border border-red-600 mt-2 w-full bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
+                        Buy now
+                    </span>
                 </Link>
             ))}
         </div>

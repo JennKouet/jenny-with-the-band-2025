@@ -70,6 +70,10 @@ const NewsListComponent = () => {
     });
   }, [articlesFromSupa]);
 
+  const visibleArticles = useMemo(() => {
+    return isAuthenticated ? sortedArticles : sortedArticles.filter((article) => article.published);
+  }, [isAuthenticated, sortedArticles]);
+
 const resetForm = () => {
   setFormValues(initialFormValues);
   setEditingArticleId(null);
@@ -341,7 +345,7 @@ const resetForm = () => {
 
       <div className="md:grid md:grid-cols-3 md:w-full md:gap-4 md:mt-5 mt-2">
         {!isLoading ? (
-          sortedArticles.map((article: ArticleProps) => (
+          visibleArticles.map((article: ArticleProps) => (
             <div
               key={article.id}
               onMouseEnter={() => handleMouseEnter(Number(article.id))}

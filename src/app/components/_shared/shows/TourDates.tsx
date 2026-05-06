@@ -18,9 +18,17 @@ interface Show {
     offers?: Array<{ url: string; type: string; status: string }>;
   }
 
+interface TourDatesProps {
+  showPast?: boolean;
+}
 
+const sortShowsByDateAsc = (shows: Show[], dateKey: 'starts_at' | 'datetime') => {
+  return [...shows].sort((a, b) => {
+    return new Date(a[dateKey]).getTime() - new Date(b[dateKey]).getTime();
+  });
+};
 
-const TourDates = () => {
+const TourDates = ({ showPast = true }: TourDatesProps) => {
   const [showsList, setShowsList] = useState<Show[]>([]);
   const [showsPast, setShowsPast] = useState<Show[]>([]);
 
@@ -35,9 +43,8 @@ const TourDates = () => {
       'date': 'upcoming'
     }
   }).then((resp) => {
-      console.log('all events', resp.data)
       setShowsList(resp.data);
-    }).catch((error) => console.log('error fetching bandsintown data', error))
+    }).catch((error) => console.error('error fetching bandsintown data', error))
   }
   
   const fetchPastShows = () => {
@@ -48,7 +55,6 @@ const TourDates = () => {
       }
     })
     .then((resp) => {
-      console.log('pasts dates', resp.data)
       setShowsPast(resp.data);
     });
   }
@@ -56,20 +62,22 @@ const TourDates = () => {
 
   useEffect(() => {
     fetchBandsInTownEvents()
-    fetchPastShows()
-  }, [])
+    if (showPast) {
+      fetchPastShows()
+    }
+  }, [showPast])
 
 
 
   return (
     <div className="z-40">
         <div className="z-40 text-white">
-            <p className="text-red-600">Past / Upcoming</p>
+            <p className="text-red-600">{showPast ? 'Past / Upcoming' : 'Upcoming'}</p>
             <h2 className="text-[#ebe9db] font-roboto">Tour Dates</h2>
             <hr className="border border-red-600"/>
             <div className='md:px-20'>
               <ul className='w-full'>
-                {showsList.slice().map((show) => (
+                {sortShowsByDateAsc(showsList, 'starts_at').map((show) => (
                     <li key={show.id} className='flex flex-row justify-between md:items-center text-white my-4 md:text-2xl gap-4'>
                         <div className='mr-4 w-1/4 text-left font-[roboto] text-red-600 font-extrabold'><p>{new Date(show.starts_at).toLocaleDateString('fr-FR')}</p></div>
                         <div className='w-1/4 font-[roboto]'><p>{show.venue?.name}</p></div>
@@ -87,16 +95,23 @@ const TourDates = () => {
                     </li>
                 ))}
               </ul>
-              <h3 className="mt-12">Past shows</h3>
-              <ul className='w-full'>
-                {showsPast.slice().reverse().map((show) => (
-                    <li key={show.id} className='flex flex-row justify-between md:items-center text-white my-4 md:text-2xl'>
-                        <div className='mr-4 w-1/4 text-left font-[roboto] text-red-600 font-extrabold'><p>{new Date(show.datetime).toLocaleDateString('fr-FR')}</p></div>
-                        <div className='w-1/4 font-[roboto]'><p>{show.venue?.name}</p></div>
-                        <div className='w-2/4 text-right font-[roboto] font-bold'><p>{show.venue?.city} ({show.venue?.postal_code})</p></div>
-                    </li>
-                ))}
-              </ul>
+              {showPast && showsList.length > 0 && showsPast.length > 0 && (
+                <hr aria-hidden="true" className="my-8 border-red-600" />
+              )}
+              {showPast && (
+                <>
+                  <h3 className="mt-12">Past shows</h3>
+                  <ul className='w-full'>
+                    {sortShowsByDateAsc(showsPast, 'datetime').map((show) => (
+                        <li key={show.id} className='flex flex-row justify-between md:items-center text-white my-4 md:text-2xl'>
+                            <div className='mr-4 w-1/4 text-left font-[roboto] text-red-600 font-extrabold'><p>{new Date(show.datetime).toLocaleDateString('fr-FR')}</p></div>
+                            <div className='w-1/4 font-[roboto]'><p>{show.venue?.name}</p></div>
+                            <div className='w-2/4 text-right font-[roboto] font-bold'><p>{show.venue?.city} ({show.venue?.postal_code})</p></div>
+                        </li>
+                    ))}
+                  </ul>
+                </>
+              )}
             </div>
         </div>
   </div>
