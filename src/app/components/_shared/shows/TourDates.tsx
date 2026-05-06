@@ -76,20 +76,20 @@ const TourDates = ({ showPast = true }: TourDatesProps) => {
             <h2 className="text-[#ebe9db] font-roboto">Tour Dates</h2>
             <hr className="border border-red-600"/>
             <div className='md:px-20'>
-              <ul className='w-full'>
+              <ul className='w-full flex flex-col items-center'>
                 {sortShowsByDateAsc(showsList, 'starts_at').map((show) => (
-                    <li key={show.id} className='flex flex-row justify-between md:items-center text-white my-4 md:text-2xl gap-4'>
-                        <div className='mr-4 w-1/4 text-left font-[roboto] text-red-600 font-extrabold'><p>{new Date(show.starts_at).toLocaleDateString('fr-FR')}</p></div>
-                        <div className='w-1/4 font-[roboto]'><p>{show.venue?.name}</p></div>
-                        <div className='w-2/4 text-right font-[roboto] font-bold'><p>{show.venue?.city} ({show.venue?.postal_code})</p></div>
+                    <li key={show.id} className='w-3/4 grid grid-cols-5 md:items-center text-white my-4 md:text-2xl gap-4'>
+                        <div className='mr-4 col-span-1 col-start-1 text-left font-[roboto] text-red-600 font-extrabold'><p>{new Date(show.starts_at).toLocaleDateString('fr-FR')}</p></div>
+                        <div className='font-[roboto]'><p>{show.venue?.name}</p></div>
+                        <div className='col-span-2 col-end-5 text-right font-[roboto] font-bold'><p>{show.venue?.city} ({show.venue?.postal_code})</p></div>
                         {show.offers && show.offers.length > 0 && (
                           <a 
                             href={show.offers[0].url} 
                             target="_blank" 
                             rel="noopener noreferrer"
-                            className='bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded font-[roboto] text-base whitespace-nowrap'
+                            className='col-span-1 col-end-6'
                           >
-                            Billets
+                            <button className="bg-red-600 text-center text-white px-4 py-2 rounded font-[roboto] text-base whitespace-nowrap hover:bg-red-700">Billets</button>
                           </a>
                         )}
                     </li>
@@ -101,12 +101,12 @@ const TourDates = ({ showPast = true }: TourDatesProps) => {
               {showPast && (
                 <>
                   <h3 className="mt-12">Past shows</h3>
-                  <ul className='w-full'>
+                  <ul className='w-full flex flex-col items-center'>
                     {sortShowsByDateAsc(showsPast, 'datetime').map((show) => (
-                        <li key={show.id} className='flex flex-row justify-between md:items-center text-white my-4 md:text-2xl'>
+                        <li key={show.id} className='w-3/4 flex flex-row justify-between md:items-center text-white my-4 md:text-2xl'>
                             <div className='mr-4 w-1/4 text-left font-[roboto] text-red-600 font-extrabold'><p>{new Date(show.datetime).toLocaleDateString('fr-FR')}</p></div>
-                            <div className='w-1/4 font-[roboto]'><p>{show.venue?.name}</p></div>
-                            <div className='w-2/4 text-right font-[roboto] font-bold'><p>{show.venue?.city} ({show.venue?.postal_code})</p></div>
+                            <div className='w-2/4 font-[roboto]'><p>{show.venue?.name}</p></div>
+                            <div className='w-1/4 text-right font-[roboto] font-bold'><p>{show.venue?.city} ({show.venue?.postal_code})</p></div>
                         </li>
                     ))}
                   </ul>
