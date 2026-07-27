@@ -1,6 +1,6 @@
 'use client'
 import React, { FC } from 'react'
-import { Lyric } from '../../lyrics/page';
+import type { Lyric } from '@/types/lyrics.types';
 
 interface SongsTitlesProps {
     lyrics: Lyric[];

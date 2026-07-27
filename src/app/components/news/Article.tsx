@@ -1,6 +1,7 @@
 import React from 'react'
 import Image from 'next/image';
 import CustomButton from '../_shared/ui/CustomButton';
+import { getArticleImageUrl } from '@/lib/articleImages';
 
 export interface ArticleProps {
     title: string;
@@ -13,10 +14,9 @@ export interface ArticleProps {
 const Article = ({title, imageUrl, link, isActive}: ArticleProps) => {
     return (
         <div className={`${isActive ? "bg-red-600" : "bg-black"} border-t-4 border-red-600  mt-4 flex flex-col items-center rounded-t-xl px-4 py-6`}>
-            {/* IMAGE */}
             <div>
                 <Image
-                    src={`${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/images/articles/${imageUrl}`}
+                    src={getArticleImageUrl(imageUrl)}
                     alt={title}
                     width={340}
                     height={140}
@@ -24,14 +24,12 @@ const Article = ({title, imageUrl, link, isActive}: ArticleProps) => {
                 />
             </div>
 
-            {/* TITLE */}
             <p className='font-[roboto] font-bold uppercase py-4'>{title}</p>
 
-           {/*  BUTTON READ MORE */}
             <CustomButton
                 text="Read More"
                 className="hover:bg-red-600 md:mx-2 my-1 w-[160px]"
-                path={link}
+                href={link}
             />
         </div>
     )

@@ -1,7 +1,14 @@
-"use client";
 import React from 'react';
+import type { Metadata } from "next";
 import TourDates from '../components/_shared/shows/TourDates';
+import { createPageMetadata } from "@/lib/seo";
 
+export const metadata: Metadata = createPageMetadata({
+  title: "Concerts",
+  description:
+    "Retrouvez les prochaines dates de concert de Jenny With the Band et les informations de tournée.",
+  path: "/shows",
+});
 
 const ShowsPage = () => {
 
