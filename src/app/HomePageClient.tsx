@@ -20,20 +20,28 @@ export default function HomePageClient() {
       style={{ backgroundImage: "url('/images/uploads/jwb-fond_noir.webp')" }}
     >
       <section className="relative w-full h-screen overflow-hidden">
-        <ReactPlayer
-          url="/images/main-video.mov"
-          playing
-          loop
-          muted
-          width="100%"
-          height="100%"
-          style={{ objectFit: "cover" }}
-          className="object-cover z-0 absolute top-0 left-0"
-        />
+        <div className="absolute inset-x-0 top-20 md:top-0 bottom-0 z-0 overflow-hidden">
+          <ReactPlayer
+            url="/images/main-video.mov"
+            playing
+            loop
+            muted
+            width="100%"
+            height="100%"
+            className="absolute top-0 left-0"
+            config={{
+              file: {
+                attributes: {
+                  style: { width: "100%", height: "100%", objectFit: "cover" },
+                },
+              },
+            }}
+          />
+        </div>
 
-        <div className="relative flex items-center mt-12 md:pl-20 md:mt-32 z-40 text-white w-full h-full">
+        <div className="relative flex items-center mt-12 border-4 border-red-500 md:pl-20 md:mt-32 z-40 text-white w-full h-full">
           <div className="flex flex-col items-center justify-between w-full md:w-1/2">
-            <h1 className="sr-only">Jenny With the Band - groupe rock blues de Nantes</h1>
+            <h1 className="sr-only">Jenny With the Band - groupe rock de Nantes</h1>
             <h2 className="text-[#ebe9db] text-3xl">New video</h2>
             <h3 className="text-red-600">Online</h3>
             <EditableIframe
