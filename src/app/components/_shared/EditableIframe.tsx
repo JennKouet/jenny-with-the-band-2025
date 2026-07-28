@@ -3,6 +3,7 @@
 
 
 import { useEffect, useState } from 'react';
+import Image from 'next/image';
 import supabase from '@/lib/supabaseClient';
 
 
@@ -15,6 +16,8 @@ interface EditableIframeProps {
   iframeClassName?: string;
   title?: string;
   allow?: string;
+  /** Image affichée à la place de la vidéo tant que l'utilisateur n'a pas cliqué. */
+  thumbnail?: string;
 }
 
 const DEFAULT_ALLOW = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
@@ -28,12 +31,14 @@ export default function EditableIframe({
   iframeClassName = '',
   title = 'YouTube video player',
   allow = DEFAULT_ALLOW,
+  thumbnail,
 }: EditableIframeProps) {
   const [embedUrl, setEmbedUrl] = useState('');
   const [inputValue, setInputValue] = useState('');
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [hasClickedPlay, setHasClickedPlay] = useState(false);
 
   // Auth check
   useEffect(() => {
@@ -89,23 +94,53 @@ export default function EditableIframe({
   const resolvedWidth = typeof width === 'number' ? `${width}` : width;
   const resolvedHeight = typeof height === 'number' ? `${height}` : height;
 
+  // Les attributs HTML width/height sont sans unité, mais le CSS en exige une.
+  const cssWidth = typeof width === 'number' ? `${width}px` : width;
+  const cssHeight = typeof height === 'number' ? `${height}px` : height;
+
+  // La vidéo n'est chargée qu'au clic sur la vignette : on ajoute autoplay pour
+  // qu'elle démarre immédiatement, sans second clic dans le lecteur YouTube.
+  const playableUrl = hasClickedPlay
+    ? `${embedUrl}${embedUrl.includes('?') ? '&' : '?'}autoplay=1`
+    : embedUrl;
+
   return (
     <div className={className}>
       {embedUrl ? (
-        <iframe
-          width={resolvedWidth}
-          height={resolvedHeight}
-          src={embedUrl}
-          title={title}
-          className={iframeClassName}
-          frameBorder="0"
-          allow={allow}
-          allowFullScreen
-        />
+        thumbnail && !hasClickedPlay ? (
+          <button
+            type="button"
+            onClick={() => setHasClickedPlay(true)}
+            aria-label={`Lire la vidéo : ${title}`}
+            className={`group relative block cursor-pointer overflow-hidden ${iframeClassName}`}
+            style={{ width: cssWidth, height: cssHeight }}
+          >
+            {/* La vignette contient déjà un bouton play incrusté : on n'en ajoute
+                pas un second, juste un assombrissement au survol. */}
+            <Image
+              src={thumbnail}
+              alt=""
+              fill
+              className="object-cover transition-transform duration-300 group-hover:scale-105"
+            />
+            <span className="absolute inset-0 bg-black/0 transition-colors group-hover:bg-black/20" />
+          </button>
+        ) : (
+          <iframe
+            width={resolvedWidth}
+            height={resolvedHeight}
+            src={playableUrl}
+            title={title}
+            className={iframeClassName}
+            frameBorder="0"
+            allow={allow}
+            allowFullScreen
+          />
+        )
       ) : (
         <div
           className="flex items-center justify-center text-white text-sm bg-black/40 rounded border border-white/20"
-          style={{ width: resolvedWidth, height: resolvedHeight }}
+          style={{ width: cssWidth, height: cssHeight }}
         >
           Aucune vidéo disponible
         </div>
