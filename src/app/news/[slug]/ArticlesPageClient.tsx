@@ -6,6 +6,7 @@ import supabase from "@/lib/supabaseClient";
 import type { ArticleProps } from "@/types/articles.types";
 import NewsListComponent from "@/app/components/news/NewsList";
 import CustomButton from "@/app/components/_shared/ui/CustomButton";
+import LinkedText from "@/app/components/_shared/LinkedText";
 import { getArticleImageUrl } from "@/lib/articleImages";
 
 type ArticlesPageClientProps = {
@@ -66,7 +67,9 @@ const ArticlesPageClient = ({ initialArticle }: ArticlesPageClientProps) => {
                 />
               </div>
               <h1 className="mt-8 text-center">{article.title}</h1>
-              {article.description && <p className="leading-7 mt-8">{article.description}</p>}
+              {article.description && (
+                <LinkedText text={article.description} className="leading-7 mt-8" />
+              )}
             </article>
           )}
         </div>

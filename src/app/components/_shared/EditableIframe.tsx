@@ -5,6 +5,10 @@
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import supabase from '@/lib/supabaseClient';
+import useAuth from '@/app/hooks/useAuth';
+import { toYouTubeEmbedUrl } from '@/lib/youtube';
+import { adminForm } from './ui/adminForm';
+import Toast, { type ToastTone } from './ui/Toast';
 
 
 interface EditableIframeProps {
@@ -35,23 +39,11 @@ export default function EditableIframe({
 }: EditableIframeProps) {
   const [embedUrl, setEmbedUrl] = useState('');
   const [inputValue, setInputValue] = useState('');
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const isAuthenticated = useAuth();
   const [isSaving, setIsSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [toast, setToast] = useState<{ message: string; tone: ToastTone } | null>(null);
   const [hasClickedPlay, setHasClickedPlay] = useState(false);
-
-  // Auth check
-  useEffect(() => {
-    const checkAuth = async () => {
-      const { data } = await supabase.auth.getSession();
-      setIsAuthenticated(!!data.session);
-    };
-    checkAuth();
-    const { data: listener } = supabase.auth.onAuthStateChange((_event, session) => {
-      setIsAuthenticated(!!session);
-    });
-    return () => listener.subscription.unsubscribe();
-  }, []);
 
   // Fetch video url
   useEffect(() => {
@@ -79,14 +71,20 @@ export default function EditableIframe({
     setIsSaving(true);
     setError(null);
     const idNum = typeof videoId === 'string' ? parseInt(videoId, 10) : videoId;
+    // On enregistre l'URL d'embed, quelle que soit la forme du lien collé.
+    const normalizedUrl = toYouTubeEmbedUrl(inputValue);
     const { error } = await supabase
       .from(tableName)
-      .update({ embedUrl: inputValue })
+      .update({ embedUrl: normalizedUrl })
       .eq('id', idNum);
     if (error) {
-      setError("Erreur lors de la sauvegarde");
+      setToast({ message: "Échec de l'enregistrement de la vidéo.", tone: 'error' });
     } else {
-      setEmbedUrl(inputValue);
+      setEmbedUrl(normalizedUrl);
+      setInputValue(normalizedUrl);
+      setToast({ message: 'Vidéo enregistrée en base.', tone: 'success' });
+      // La vignette réapparaît pour que la nouvelle vidéo soit visible tout de suite.
+      setHasClickedPlay(false);
     }
     setIsSaving(false);
   };
@@ -98,14 +96,21 @@ export default function EditableIframe({
   const cssWidth = typeof width === 'number' ? `${width}px` : width;
   const cssHeight = typeof height === 'number' ? `${height}px` : height;
 
+  // Converti aussi à l'affichage : les lignes déjà en base peuvent contenir
+  // n'importe quelle forme de lien YouTube.
+  const srcUrl = toYouTubeEmbedUrl(embedUrl);
+
   // La vidéo n'est chargée qu'au clic sur la vignette : on ajoute autoplay pour
   // qu'elle démarre immédiatement, sans second clic dans le lecteur YouTube.
   const playableUrl = hasClickedPlay
-    ? `${embedUrl}${embedUrl.includes('?') ? '&' : '?'}autoplay=1`
-    : embedUrl;
+    ? `${srcUrl}${srcUrl.includes('?') ? '&' : '?'}autoplay=1`
+    : srcUrl;
 
   return (
     <div className={className}>
+      {/* Colonne interne : le formulaire reste sous la vidéo même quand le
+          conteneur parent est en flex-row. */}
+      <div className="flex w-full flex-col items-center">
       {embedUrl ? (
         thumbnail && !hasClickedPlay ? (
           <button
@@ -142,31 +147,48 @@ export default function EditableIframe({
           className="flex items-center justify-center text-white text-sm bg-black/40 rounded border border-white/20"
           style={{ width: cssWidth, height: cssHeight }}
         >
-          Aucune vidéo disponible
+          {error ?? 'Aucune vidéo disponible'}
         </div>
       )}
       {isAuthenticated && (
-        <form onSubmit={handleSubmit} className="mt-3 flex flex-col gap-2 text-white text-sm">
-          <label htmlFor={`video-url-${videoId}`} className="font-semibold">
-            URL de la vidéo (embed)
+        <form
+          onSubmit={handleSubmit}
+          className={`${adminForm.card} mt-4 max-w-xl`}
+        >
+          <p className={adminForm.eyebrow}>Administration</p>
+
+          <label htmlFor={`video-url-${videoId}`} className={`mt-2 ${adminForm.label}`}>
+            Lien de la vidéo YouTube
           </label>
+
           <input
             id={`video-url-${videoId}`}
-            type="text"
+            type="url"
             value={inputValue}
             onChange={e => setInputValue(e.target.value)}
-            className="rounded bg-white/10 px-3 py-2 text-white border border-white/30 focus:outline-none focus:ring-2 focus:ring-red-500"
-            placeholder="https://www.youtube.com/embed/..."
+            className={adminForm.input}
+            placeholder="https://www.youtube.com/watch?v=..."
           />
-          {error && <p className="text-red-400">{error}</p>}
-          <button
-            type="submit"
-            disabled={isSaving}
-            className="self-start rounded bg-red-600 px-4 py-2 text-white hover:bg-red-500 disabled:opacity-50"
-          >
-            {isSaving ? 'Sauvegarde...' : 'Sauvegarder'}
-          </button>
+
+          <p className={adminForm.hint}>
+            Colle le lien tel quel : partage, /watch, youtu.be ou Short.
+          </p>
+
+          <div className="mt-3">
+            <button
+              type="submit"
+              disabled={isSaving || !inputValue.trim()}
+              className={adminForm.primaryButton}
+            >
+              {isSaving ? 'Sauvegarde…' : 'Sauvegarder'}
+            </button>
+          </div>
         </form>
+      )}
+      </div>
+
+      {isAuthenticated && toast && (
+        <Toast message={toast.message} tone={toast.tone} onClose={() => setToast(null)} />
       )}
     </div>
   );

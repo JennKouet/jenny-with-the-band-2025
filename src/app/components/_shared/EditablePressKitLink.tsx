@@ -2,6 +2,9 @@
 import React, { useEffect, useState } from 'react';
 import supabase from '@/lib/supabaseClient';
 import useAuth from '@/app/hooks/useAuth';
+import { adminForm } from './ui/adminForm';
+import Toast, { type ToastTone } from './ui/Toast';
+
 interface EditableLinkProps {
   id?: number;
   linkUrl?: string;
@@ -15,6 +18,7 @@ const EditablePressKitLink = ({ id, linkUrl, setPressKitUrl }: EditableLinkProps
   const [error, setError] = useState<string | null>(null);
   const isAuthenticated = useAuth();
   const [uploading, setUploading] = useState(false);
+  const [toast, setToast] = useState<{ message: string; tone: ToastTone } | null>(null);
 
   const [linkExists, setLinkExists] = useState(true);
   useEffect(() => {
@@ -67,6 +71,9 @@ const EditablePressKitLink = ({ id, linkUrl, setPressKitUrl }: EditableLinkProps
 
     if (error) {
       setError("Erreur lors de la sauvegarde");
+      setToast({ message: "Échec de l'enregistrement du lien.", tone: 'error' });
+    } else {
+      setToast({ message: 'Lien du dossier de presse enregistré.', tone: 'success' });
     }
     setIsSaving(false);
   };
@@ -87,6 +94,7 @@ const EditablePressKitLink = ({ id, linkUrl, setPressKitUrl }: EditableLinkProps
 
     if (uploadError) {
       setError("Erreur lors de l'upload du fichier");
+      setToast({ message: "Échec de l'envoi du fichier.", tone: 'error' });
       setUploading(false);
       return;
     }
@@ -97,17 +105,33 @@ const EditablePressKitLink = ({ id, linkUrl, setPressKitUrl }: EditableLinkProps
     if (publicUrl) {
       setInputValue(publicUrl);
       if (setPressKitUrl) setPressKitUrl(publicUrl);
-      // Mets à jour ou insère la table Links
+      // Mets à jour ou insère la table Links. L'erreur doit être remontée :
+      // le fichier peut être envoyé alors que l'écriture en base échoue.
       if (id) {
+        let dbError = null;
         if (linkExists) {
-          await supabase.from('Links').update({ linkUrl: publicUrl }).eq('id', id);
+          ({ error: dbError } = await supabase
+            .from('Links')
+            .update({ linkUrl: publicUrl })
+            .eq('id', id));
         } else {
           const { error: insertError, data: insertData } = await supabase
             .from('Links')
             .insert([{ id, linkUrl: publicUrl, type: 'press_kit' }])
             .select()
             .maybeSingle();
+          dbError = insertError;
           if (!insertError && insertData) setLinkExists(true);
+        }
+
+        if (dbError) {
+          setError("Erreur lors de l'enregistrement en base");
+          setToast({
+            message: "Fichier envoyé, mais non enregistré en base.",
+            tone: 'error',
+          });
+        } else {
+          setToast({ message: 'Dossier de presse enregistré en base.', tone: 'success' });
         }
       }
     }
@@ -117,42 +141,55 @@ const EditablePressKitLink = ({ id, linkUrl, setPressKitUrl }: EditableLinkProps
   if (!isAuthenticated) return null;
 
   return (
-    <div className="mt-3 flex flex-col gap-4 text-white text-sm">
-      <form onSubmit={handleSubmit} className="flex flex-col gap-2">
-        <label htmlFor={`link-url-${id}`} className="font-semibold">
+    <div className={`${adminForm.card} mt-3`}>
+      <p className={adminForm.eyebrow}>Administration</p>
+
+      <form onSubmit={handleSubmit}>
+        <label htmlFor={`link-url-${id}`} className={`mt-2 ${adminForm.label}`}>
           URL du dossier de presse
         </label>
         <input
           id={`link-url-${id}`}
-          type="text"
+          type="url"
           value={inputValue}
           onChange={e => setInputValue(e.target.value)}
-          className="rounded bg-white/10 px-3 py-2 text-white border border-white/30 focus:outline-none focus:ring-2 focus:ring-red-500"
-          placeholder="insérez le lien ici"
+          className={adminForm.input}
+          placeholder="https://…"
         />
-        {error && <p className="text-red-400">{error}</p>}
-        <button
-          type="submit"
-          disabled={isSaving}
-          className="self-start rounded bg-red-600 px-4 py-2 text-white hover:bg-red-500 disabled:opacity-50"
-        >
-          {isSaving ? 'Sauvegarde...' : 'Sauvegarder'}
-        </button>
+        <div className="mt-3 flex flex-wrap items-center gap-3">
+          <button
+            type="submit"
+            disabled={isSaving || !inputValue.trim()}
+            className={adminForm.primaryButton}
+          >
+            {isSaving ? 'Sauvegarde…' : 'Sauvegarder'}
+          </button>
+          {error && <span className={adminForm.error}>{error}</span>}
+        </div>
       </form>
-      <div>
-        <label htmlFor={`file-upload-${id}`} className="font-semibold block mb-1">
-          Ou uploader un PDF
+
+      <div className="mt-4 border-t border-white/10 pt-4">
+        <label htmlFor={`file-upload-${id}`} className={adminForm.label}>
+          Ou envoyer un PDF
         </label>
         <input
           id={`file-upload-${id}`}
           type="file"
           accept="application/pdf"
           onChange={handleFileChange}
-          className="text-white border border-white/30 rounded px-3 py-2"
+          className={adminForm.fileInput}
           disabled={uploading}
         />
-        {uploading && <p className="text-gray-300">Upload en cours...</p>}
+        {uploading && <p className={adminForm.hint}>Upload en cours…</p>}
       </div>
+
+      {toast && (
+        <Toast
+          message={toast.message}
+          tone={toast.tone}
+          onClose={() => setToast(null)}
+        />
+      )}
     </div>
   );
 };
