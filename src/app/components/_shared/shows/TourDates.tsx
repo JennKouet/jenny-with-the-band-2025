@@ -1,7 +1,6 @@
 'use client'
 import React, {useEffect, useState} from 'react';
 import axios from 'axios';
-//import {format, subYears} from 'date-fns';
 
 interface Venue {
     name: string;
@@ -78,7 +77,32 @@ const TourDates = ({ showPast = true }: TourDatesProps) => {
             <div className='md:px-20'>
               <ul className='w-full flex flex-col items-center'>
                 {sortShowsByDateAsc(showsList, 'starts_at').map((show) => (
-                    <li key={show.id} className='w-3/4 grid grid-cols-5 md:items-center text-white my-4 md:text-2xl gap-4'>
+                  <React.Fragment key={show.id}>
+                    {/* VERSION MOBILE */}
+                    <li className='lg:hidden flex flex-col w-full text-white my-4 gap-4'>
+                        <div className="">
+                          {/* Date event */}
+                          <div className='mr-4 col-span-1 col-start-1 text-left font-[roboto] text-red-600 font-extrabold'><p>{new Date(show.starts_at).toLocaleDateString('fr-FR')}</p></div>
+                          {/* Event name */}
+                          <div className='font-[roboto]'><p>{show.venue?.name}</p></div>
+                          {/* Event city and zipcode */}
+                          <div className='col-span-2 font-[roboto] font-bold'><p>{show.venue?.city} ({show.venue?.postal_code})</p></div>
+                        </div>
+                          {/* Buy button */}
+                          {show.offers && show.offers.length > 0 && (
+                            <a 
+                              href={show.offers[0].url} 
+                              target="_blank" 
+                              rel="noopener noreferrer"
+                              className='mt-4'
+                            >
+                              <button className="bg-red-600 text-center text-white px-4 py-2 rounded font-[roboto] text-base whitespace-nowrap hover:bg-red-700">Billets</button>
+                            </a>
+                          )}
+                    </li>
+
+                    {/* VERSION DESKTOP */}
+                    <li key={show.id} className='hidden lg:w-3/4 lg:grid lg:grid-cols-5 md:items-center lg:text-white lg:my-4 md:text-2xl lg:gap-4'>
                         <div className='mr-4 col-span-1 col-start-1 text-left font-[roboto] text-red-600 font-extrabold'><p>{new Date(show.starts_at).toLocaleDateString('fr-FR')}</p></div>
                         <div className='font-[roboto]'><p>{show.venue?.name}</p></div>
                         <div className='col-span-2 col-end-5 text-right font-[roboto] font-bold'><p>{show.venue?.city} ({show.venue?.postal_code})</p></div>
@@ -93,6 +117,7 @@ const TourDates = ({ showPast = true }: TourDatesProps) => {
                           </a>
                         )}
                     </li>
+                  </React.Fragment>
                 ))}
               </ul>
               {showPast && showsList.length > 0 && showsPast.length > 0 && (
@@ -101,13 +126,22 @@ const TourDates = ({ showPast = true }: TourDatesProps) => {
               {showPast && (
                 <>
                   <h3 className="mt-12">Past shows</h3>
-                  <ul className='w-full flex flex-col items-center'>
+                  <ul className='w-full flex flex-col lg:items-center'>
                     {sortShowsByDateAsc(showsPast, 'datetime').map((show) => (
-                        <li key={show.id} className='w-3/4 flex flex-row justify-between md:items-center text-white my-4 md:text-2xl'>
+                      <React.Fragment key={show.id}>
+                        {/* VERSION MOBILE */}
+                        <li  className='w-full flex flex-col text-white my-4 md:hidden'>
+                            <div className='mr-4 text-left font-[roboto] text-red-600 font-extrabold'><p>{new Date(show.datetime).toLocaleDateString('fr-FR')}</p></div>
+                            <div className='font-[roboto]'><p>{show.venue?.name}</p></div>
+                            <div className='font-[roboto] font-bold'><p>{show.venue?.city} ({show.venue?.postal_code})</p></div>
+                        </li>
+                        {/* VERSION DESKTOP */}
+                        <li  className='hidden w-3/4 md:flex flex-row justify-between md:items-center text-white my-4 md:text-2xl'>
                             <div className='mr-4 w-1/4 text-left font-[roboto] text-red-600 font-extrabold'><p>{new Date(show.datetime).toLocaleDateString('fr-FR')}</p></div>
                             <div className='w-2/4 font-[roboto]'><p>{show.venue?.name}</p></div>
                             <div className='w-1/4 text-right font-[roboto] font-bold'><p>{show.venue?.city} ({show.venue?.postal_code})</p></div>
                         </li>
+                      </React.Fragment>
                     ))}
                   </ul>
                 </>

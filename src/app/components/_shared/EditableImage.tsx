@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react'
 import supabase from '@/lib/supabaseClient'
+import useAuth from '@/app/hooks/useAuth'
 import Image from 'next/image'
 
 export default function EditableImage({
@@ -24,7 +25,7 @@ export default function EditableImage({
   const inputRef = useRef<HTMLInputElement>(null)
   const [url, setUrl] = useState('')
   const [uploading, setUploading] = useState(false)
-  const [isAuthenticated, setAuthenticated] = useState(false)
+  const isAuthenticated = useAuth()
 
 
 
@@ -35,21 +36,6 @@ export default function EditableImage({
       setUrl(updatedUrl)
     }
   }, [imagePath, bucket])
-
-  useEffect(() => {
-    const fetchSession = async () => {
-      const { data } = await supabase.auth.getSession()
-      setAuthenticated(!!data.session)
-    }
-    fetchSession()
-
-    const { data: listener } = supabase.auth.onAuthStateChange((_event, session) => {
-      setAuthenticated(!!session)
-    })
-    return () => {
-      listener.subscription.unsubscribe()
-    }
-  }, [])
 
 
   const handleUpload = async (file: File) => {

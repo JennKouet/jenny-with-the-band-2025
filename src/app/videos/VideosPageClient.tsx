@@ -4,6 +4,8 @@ import React, {useEffect, useState} from 'react';
 import supabase from "@/lib/supabaseClient";
 import type { VideoProps } from "@/types/videos.types";
 import useAuth from "@/app/hooks/useAuth";
+import { toYouTubeEmbedUrl } from "@/lib/youtube";
+import { adminForm } from "@/app/components/_shared/ui/adminForm";
 
 const VideosPageClient = () => {
     const [loading, setLoading] = useState(true);
@@ -40,7 +42,8 @@ const handleAddVideo = async (e: React.FormEvent) => {
     .from('Videos')
     .insert([
       {
-        embedUrl: newVideoUrl,
+        // On enregistre l'URL d'embed, quelle que soit la forme du lien collé.
+        embedUrl: toYouTubeEmbedUrl(newVideoUrl),
         slug: slug,
         published: true
       }
@@ -51,7 +54,9 @@ const handleAddVideo = async (e: React.FormEvent) => {
     console.error('Error adding video:', error.message);
     alert('Erreur lors de l\'ajout de la vidéo');
   } else if (data) {
-    setVideos([...videos, ...(data as VideoProps[])]);
+    // La liste est triée du plus récent au plus ancien : la nouvelle vidéo
+    // doit donc être placée en tête, sinon elle atterrit en bas de la grille.
+    setVideos([...(data as VideoProps[]), ...videos]);
     setNewVideoUrl('');
   }
   setIsAdding(false);
@@ -77,37 +82,47 @@ const handleDeleteVideo = async (id: string) => {
         <section className="pt-10 md:px-36 md:pt-32 bg-black-background relative z-10" id="videos">
             <h1 className="sr-only">Vidéos de Jenny With the Band</h1>
             {isAuthenticated && (
-                <div className="mb-8 p-6 bg-gray-900 rounded-lg">
-                    <h3 className="text-white text-xl mb-4">Ajouter une vidéo</h3>
-                    <form onSubmit={handleAddVideo} className="flex gap-4">
+                <form onSubmit={handleAddVideo} className={`${adminForm.card} mb-8`}>
+                    <p className={adminForm.eyebrow}>Administration</p>
+
+                    <label htmlFor="new-video-url" className={`mt-2 ${adminForm.label}`}>
+                        Ajouter une vidéo
+                    </label>
+
+                    <div className="flex flex-wrap items-start gap-3">
                         <input
-                            type="text"
+                            id="new-video-url"
+                            type="url"
                             value={newVideoUrl}
                             onChange={(e) => setNewVideoUrl(e.target.value)}
-                            placeholder="URL embed YouTube (ex: https://www.youtube.com/embed/...)"
-                            className="flex-1 px-4 py-2 rounded bg-gray-800 text-white border border-gray-700 focus:outline-none focus:border-red-600"
+                            placeholder="https://www.youtube.com/watch?v=..."
+                            className={`${adminForm.input} min-w-60 flex-1`}
                             disabled={isAdding}
                         />
                         <button
                             type="submit"
                             disabled={isAdding || !newVideoUrl.trim()}
-                            className="px-6 py-2 bg-red-600 text-white rounded hover:bg-red-700 disabled:bg-gray-600 disabled:cursor-not-allowed"
+                            className={`${adminForm.primaryButton} mt-1.5`}
                         >
-                            {isAdding ? 'Ajout...' : 'Ajouter'}
+                            {isAdding ? 'Ajout…' : 'Ajouter'}
                         </button>
-                    </form>
-                </div>
+                    </div>
+
+                    <p className={adminForm.hint}>
+                        Colle le lien tel quel : partage, /watch, youtu.be ou Short.
+                    </p>
+                </form>
             )}
 
             <div className="grid grid-cols-1 md:grid-cols-2 items-center gap-4 z-20">
                 {!loading && videos.length > 0 ? (
                     videos.map((video) => (
-                        <div key={video.id} className="relative group">
-                            <iframe width="100%" height="350" src={video.embedUrl} title="YouTube video player" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen></iframe>
+                        <div key={video.id} className="relative group p-4">
+                            <iframe width="100%" height="350" className="w-full h-57.5 md:h-87.5" src={toYouTubeEmbedUrl(video.embedUrl)} title="YouTube video player" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen></iframe>
                             {isAuthenticated && (
                                 <button
                                     onClick={() => handleDeleteVideo(video.id)}
-                                    className="absolute top-2 right-2 bg-red-600 text-white px-3 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity hover:bg-red-700"
+                                    className="absolute top-6 right-6 bg-red-600 text-white px-3 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity hover:bg-red-700"
                                 >
                                     Supprimer
                                 </button>

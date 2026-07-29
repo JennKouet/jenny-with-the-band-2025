@@ -3,6 +3,9 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import supabase from "@/lib/supabaseClient";
 import type { ArticleProps } from "@/types/articles.types";
 import ArticleComponent from "./Article";
+import useAuth from "@/app/hooks/useAuth";
+import { adminForm } from "@/app/components/_shared/ui/adminForm";
+import Toast, { type ToastTone } from "@/app/components/_shared/ui/Toast";
 
 type ArticleFormState = Pick<ArticleProps, "title" | "description" | "imageUrl" | "slug" | "published">;
 
@@ -24,7 +27,8 @@ const NewsListComponent = () => {
   const [editingArticleId, setEditingArticleId] = useState<string | null>(null);
   const [formValues, setFormValues] = useState<ArticleFormState>(initialFormValues);
   const [isUploadingImage, setUploadingImage] = useState(false);
-  const [isAuthenticated, setAuthenticated] = useState(false);
+  const [toast, setToast] = useState<{ message: string; tone: ToastTone } | null>(null);
+  const isAuthenticated = useAuth();
 
   const handleMouseEnter = (cardId: number) => {
     setSelectedCardId(cardId);
@@ -49,20 +53,6 @@ const NewsListComponent = () => {
   useEffect(() => {
     fetchArticlesFromSupabase();
   }, [fetchArticlesFromSupabase]);
-
-  useEffect(() => {
-    const checkSession = async () => {
-      const { data } = await supabase.auth.getSession();
-      setAuthenticated(!!data.session);
-    };
-    checkSession();
-    const { data: listener } = supabase.auth.onAuthStateChange((_event, session) => {
-      setAuthenticated(!!session);
-    });
-    return () => {
-      listener.subscription.unsubscribe();
-    };
-  }, []);
 
   const sortedArticles = useMemo(() => {
     return [...articlesFromSupa].sort((a, b) => {
@@ -169,11 +159,7 @@ const resetForm = () => {
       event.target.value = "";
     } catch (uploadError) {
       console.error(uploadError);
-      setFormError(
-        uploadError instanceof Error && "message" in uploadError
-          ? (uploadError as { message: string }).message
-          : "Une erreur est survenue durant l'upload."
-      );
+      setToast({ message: "Échec de l'envoi de l'image.", tone: "error" });
     } finally {
       setUploadingImage(false);
     }
@@ -186,11 +172,12 @@ const resetForm = () => {
     setSubmitting(true);
     const { error } = await supabase.from("Articles").delete().eq("id", articleId);
     if (error) {
-      setFormError(error.message);
+      setToast({ message: "Échec de la suppression de l'article.", tone: "error" });
       setSubmitting(false);
       return;
     }
     await fetchArticlesFromSupabase();
+    setToast({ message: "Article supprimé.", tone: "success" });
     setSubmitting(false);
   };
 
@@ -220,11 +207,20 @@ const resetForm = () => {
     const { error } = await query;
 
     if (error) {
-      setFormError(error.message);
+      setToast({
+        message: editingArticleId
+          ? "Échec de la mise à jour de l'article."
+          : "Échec de la création de l'article.",
+        tone: "error",
+      });
       setSubmitting(false);
       return;
     }
 
+    setToast({
+      message: editingArticleId ? "Article mis à jour." : "Article créé.",
+      tone: "success",
+    });
     await fetchArticlesFromSupabase();
     resetForm();
     setFormVisible(false);
@@ -234,18 +230,18 @@ const resetForm = () => {
   return (
     <div>
       {isAuthenticated && (
-      <div className="bg-black/40 border border-red-600 rounded-lg p-4 mb-6">
-        <div className="flex items-center justify-between">
-          <h3 className="text-white font-semibold">Administration des articles</h3>
-          <div className="flex gap-2 items-center">
-            <button
-              className="text-xs text-white/70 underline"
-              onClick={() => supabase.auth.signOut()}
-            >
+      <div className={`${adminForm.card} mb-6`}>
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <div>
+            <p className={adminForm.eyebrow}>Administration</p>
+            <p className={adminForm.title}>Articles</p>
+          </div>
+          <div className="flex items-center gap-3">
+            <button className={adminForm.linkButton} onClick={() => supabase.auth.signOut()}>
               Se déconnecter
             </button>
             <button
-              className="text-sm text-white border border-white rounded px-3 py-1"
+              className={adminForm.secondaryButton}
               onClick={() => {
                 if (isFormVisible) {
                   resetForm();
@@ -259,76 +255,97 @@ const resetForm = () => {
         </div>
 
         {isFormVisible && (
-          <form className="mt-4 space-y-3 font-[roboto]" onSubmit={handleSubmit}>
-            <label className="text-white text-sm font-medium">
-              Titre
+          <form className="mt-4 space-y-4" onSubmit={handleSubmit}>
+            <div>
+              <label htmlFor="article-title" className={adminForm.label}>
+                Titre
+              </label>
               <input
+                id="article-title"
                 type="text"
                 value={formValues.title}
                 onChange={(event) => handleFormChange("title", event.target.value)}
-                className="mt-1 w-full rounded border border-gray-600 bg-black/20 p-2 text-white"
+                className={adminForm.input}
                 required
               />
-            </label>
-            <label className="text-white text-sm font-medium">
-              Description
+            </div>
+
+            <div>
+              <label htmlFor="article-description" className={adminForm.label}>
+                Description
+              </label>
               <textarea
+                id="article-description"
                 value={formValues.description}
                 onChange={(event) => handleFormChange("description", event.target.value)}
-                className="mt-1 w-full rounded border border-gray-600 bg-black/20 p-2 text-white"
-                rows={3}
+                className={adminForm.textarea}
+                rows={5}
               />
-            </label>
-            <label className="text-white text-sm font-medium">
-              Slug
+              <p className={adminForm.hint}>
+                Les liens sont détectés automatiquement, et les sauts de ligne conservés.
+              </p>
+            </div>
+
+            <div>
+              <label htmlFor="article-slug" className={adminForm.label}>
+                Slug
+              </label>
               <input
+                id="article-slug"
                 type="text"
                 value={formValues.slug}
                 onChange={(event) => handleFormChange("slug", event.target.value)}
-                className="mt-1 w-full rounded border border-gray-600 bg-black/20 p-2 text-white"
+                className={adminForm.input}
                 required
               />
-            </label>
-            <label className="text-white text-sm font-medium">
-              Nom du fichier image
-              <div className="mt-1 space-y-2">
-                <input
-                  type="file"
-                  accept="image/*"
-                  onChange={handleFileUpload}
-                  className="w-full rounded border border-gray-600 bg-black/20 p-2 text-white file:text-white"
-                />
-                {isUploadingImage && (
-                  <p className="text-xs text-white/70">Conversion et upload en cours…</p>
-                )}
-                {formValues.imageUrl && !isUploadingImage && (
-                  <p className="text-xs text-green-300">Image téléchargée : {formValues.imageUrl}</p>
-                )}
-              </div>
-            </label>
-            <label className="flex items-center gap-2 text-white text-sm">
+              <p className={adminForm.hint}>
+                Identifiant dans l&apos;URL de l&apos;article, en minuscules et sans accents.
+              </p>
+            </div>
+
+            <div>
+              <label htmlFor="article-image" className={adminForm.label}>
+                Image
+              </label>
+              <input
+                id="article-image"
+                type="file"
+                accept="image/*"
+                onChange={handleFileUpload}
+                className={adminForm.fileInput}
+              />
+              {isUploadingImage && (
+                <p className={adminForm.hint}>Conversion et upload en cours…</p>
+              )}
+              {formValues.imageUrl && !isUploadingImage && (
+                <p className={`mt-1.5 ${adminForm.success}`}>
+                  Image envoyée : {formValues.imageUrl}
+                </p>
+              )}
+            </div>
+
+            <label className="flex items-center gap-2 text-sm text-white">
               <input
                 type="checkbox"
                 checked={formValues.published}
                 onChange={(event) => handleFormChange("published", event.target.checked)}
+                className="h-4 w-4 accent-red-600"
               />
               Article publié
             </label>
 
-            {formError && <p className="text-red-400 text-sm">{formError}</p>}
-
-            <div className="flex gap-3">
+            <div className="flex flex-wrap items-center gap-3">
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="bg-red-600 text-white rounded px-4 py-2 disabled:opacity-60"
+                className={adminForm.primaryButton}
               >
                 {editingArticleId ? "Mettre à jour" : "Créer"}
               </button>
               {editingArticleId && (
                 <button
                   type="button"
-                  className="text-white underline"
+                  className={adminForm.linkButton}
                   onClick={() => {
                     resetForm();
                     setFormVisible(false);
@@ -337,6 +354,7 @@ const resetForm = () => {
                   Annuler
                 </button>
               )}
+              {formError && <span className={adminForm.error}>{formError}</span>}
             </div>
           </form>
         )}
@@ -358,15 +376,15 @@ const resetForm = () => {
                 isActive={selectedCardId === Number(article.id)}
               />
               {isAuthenticated && (
-                <div className="flex justify-end gap-2 mt-2">
+                <div className="font-[roboto] mt-2 flex justify-end gap-4">
                   <button
-                    className="text-sm text-white underline"
+                    className={adminForm.linkButton}
                     onClick={() => handleEditArticle(article)}
                   >
                     Modifier
                   </button>
                   <button
-                    className="text-sm text-red-400 underline disabled:opacity-60"
+                    className="text-sm text-red-400 underline transition-colors hover:text-red-300 disabled:opacity-60"
                     disabled={isSubmitting}
                     onClick={() => handleDeleteArticle(article.id)}
                   >
@@ -380,6 +398,12 @@ const resetForm = () => {
           <p className="text-white">Loading...</p>
         )}
       </div>
+
+      {/* Les toasts ne sont déclenchés que par les actions d'administration,
+          elles-mêmes réservées au compte admin. */}
+      {isAuthenticated && toast && (
+        <Toast message={toast.message} tone={toast.tone} onClose={() => setToast(null)} />
+      )}
     </div>
   );
 };

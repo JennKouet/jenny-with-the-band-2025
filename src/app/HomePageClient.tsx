@@ -19,47 +19,61 @@ export default function HomePageClient() {
       className="flex flex-col w-full items-center relative"
       style={{ backgroundImage: "url('/images/uploads/jwb-fond_noir.webp')" }}
     >
+      <EditableIframe
+        tableName="HomeVideos"
+        videoId="2"
+        height={230}
+        thumbnail="/images/miniature-video-site.webp"
+        iframeClassName="w-full rounded-lg shadow-lg shadow-black/50"
+        className="flex flex-row mt-8 w-full p-2 md:hidden"
+      />
       <section className="relative w-full h-screen overflow-hidden">
-        <ReactPlayer
-          url="/images/main-video.mov"
-          playing
-          loop
-          muted
-          width="100%"
-          height="100%"
-          style={{ objectFit: "cover" }}
-          className="object-cover z-0 absolute top-0 left-0"
-        />
+        <div className="absolute inset-x-0 top-0 bottom-0 z-0 overflow-hidden">
+          <ReactPlayer
+            url="/images/main-video-site.mov"
+            playing
+            loop
+            muted
+            width="100%"
+            height="100%"
+            className="absolute top-0 left-0"
+            config={{
+              file: {
+                attributes: {
+                  className: "object-[80%_center] md:object-center",
+                  style: { width: "100%", height: "100%", objectFit: "cover" },
+                },
+              },
+            }}
+          />
+          <div className="absolute top-0 left-0 h-full w-full bg-black/25 md:hidden"></div>
+        </div>
 
         <div className="relative flex items-center mt-12 md:pl-20 md:mt-32 z-40 text-white w-full h-full">
           <div className="flex flex-col items-center justify-between w-full md:w-1/2">
-            <h1 className="sr-only">Jenny With the Band - groupe rock blues de Nantes</h1>
-            <h2 className="text-[#ebe9db] text-3xl">New video</h2>
-            <h3 className="text-red-600">Online</h3>
+            <h1 className="sr-only">Jenny With the Band - groupe rock de Nantes</h1>
+            <h2 className="hidden md:flex text-[#ebe9db] text-3xl">New video</h2>
+            <h3 className="hidden md:flex text-red-600">Online</h3>
             <EditableIframe
               tableName="HomeVideos"
               videoId="2"
-              height={230}
-              className="flex flex-row my-5 w-full p-2 md:hidden"
-            />
-            <EditableIframe
-              tableName="HomeVideos"
-              videoId="2"
-              height={350}
-              className="md:flex md:flex-row md:mb-5 md:py-10 md:w-full hidden"
+              height={324}
+              thumbnail="/images/miniature-video-site.webp"
+              iframeClassName="md:w-full md:max-w-[576px] lg:max-w-[470] md:rounded-lg"
+              className="md:flex md:flex-row md:justify-center md:mb-5 md:py-10 md:w-full hidden"
             />
             <div className="flex flex-col md:items-center md:w-full md:mt-2">
               <CustomButton
                 text="Listen on Streaming"
                 href="https://li.sten.to/jennywiththeband"
                 target="_blank"
-                className="hover:bg-red-600 md:mx-2 my-1 w-[300px]"
+                className="hover:bg-red-600 md:mx-2 my-1 w-75 text-center lg:text-left"
               />
               <CustomButton
                 text="Buy Now"
                 href="https://jenny-with-the-band.sumupstore.com/"
                 target="_blank"
-                className="hover:bg-red-600 md:mx-2 my-1 w-[300px]"
+                className="hover:bg-red-600 md:mx-2 my-1 w-75 text-center lg:text-left"
               />
             </div>
             <div className="z-40 flex flex-col mt-10 items-center md:mt-20 md:bottom-20 md:pb-20 text-white font-body">
@@ -75,7 +89,7 @@ export default function HomePageClient() {
           <div className="z-40 text-white">
             <p className="text-red-600">Latest</p>
             <h2 className="text-[#ebe9db] font-roboto">News</h2>
-            <hr className="border border-red-600" />
+            <hr className="hidden md:block border border-red-600" />
             <NewsListComponent />
           </div>
         </div>
@@ -87,7 +101,7 @@ export default function HomePageClient() {
           <CustomButton
             text="Click here to see all tour dates"
             href="/shows"
-            className="hover:bg-red-600 md:mx-2 my-1 w-[300px]"
+            className="hover:bg-red-600 md:mx-2 my-1 w-75"
           />
         </div>
       </section>
