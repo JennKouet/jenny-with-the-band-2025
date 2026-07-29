@@ -34,7 +34,7 @@
     color: #ebe9db;
   }
   h1, h2{
-    @apply text-5xl;
+    @apply text-3xl lg:text-5xl;
     font-family: 'Horbse-Textured', cursive;
   }
   h3 {

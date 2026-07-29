@@ -33,7 +33,7 @@ const musicGroupJsonLd = {
   name: siteConfig.name,
   url: getSiteUrl("/"),
   image: getSiteUrl(siteConfig.openGraphImage.url),
-  genre: ["Rock", "Blues"],
+  genre: ["Rock"],
   sameAs: siteConfig.socialLinks,
   email: "contact@jennywiththeband.com",
 };
