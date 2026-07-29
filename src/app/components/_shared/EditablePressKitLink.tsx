@@ -5,6 +5,27 @@ import useAuth from '@/app/hooks/useAuth';
 import { adminForm } from './ui/adminForm';
 import Toast, { type ToastTone } from './ui/Toast';
 
+const DOCUMENTS_PUBLIC_PREFIX = '/storage/v1/object/public/documents/';
+
+// Motif des noms générés par ce formulaire. On ne supprime que ceux-là :
+// les fichiers déposés à la main depuis le dashboard portent un autre nom
+// et ne doivent jamais être effacés automatiquement.
+const GENERATED_FILE_NAME = /^presskit_\d+\.[A-Za-z0-9]+$/;
+
+/**
+ * Extrait le chemin de stockage d'une URL publique, uniquement si le fichier
+ * a été généré par ce formulaire. Renvoie null dans tous les autres cas.
+ */
+const generatedStoragePath = (url: string | null | undefined) => {
+  if (!url) return null;
+  const index = url.indexOf(DOCUMENTS_PUBLIC_PREFIX);
+  if (index === -1) return null;
+  const path = decodeURIComponent(
+    url.slice(index + DOCUMENTS_PUBLIC_PREFIX.length).split('?')[0]
+  );
+  return GENERATED_FILE_NAME.test(path) ? path : null;
+};
+
 interface EditableLinkProps {
   id?: number;
   linkUrl?: string;
@@ -83,6 +104,9 @@ const EditablePressKitLink = ({ id, linkUrl, setPressKitUrl }: EditableLinkProps
     if (!file) return;
     setUploading(true);
     setError(null);
+    // Mémorisé avant l'envoi : c'est le fichier à nettoyer une fois le
+    // remplacement confirmé en base.
+    const previousUrl = inputValue;
     const fileExt = file.name.split('.').pop();
     const fileName = `presskit_${Date.now()}.${fileExt}`;
     const filePath = `${fileName}`;
@@ -132,6 +156,22 @@ const EditablePressKitLink = ({ id, linkUrl, setPressKitUrl }: EditableLinkProps
           });
         } else {
           setToast({ message: 'Dossier de presse enregistré en base.', tone: 'success' });
+
+          // Le lien pointe désormais sur le nouveau fichier : l'ancien peut
+          // être retiré. Un échec ici n'invalide pas l'enregistrement, on se
+          // contente de le tracer sans alerter l'utilisatrice.
+          const previousPath = generatedStoragePath(previousUrl);
+          if (previousPath && previousPath !== filePath) {
+            const { error: removeError } = await supabase.storage
+              .from('documents')
+              .remove([previousPath]);
+            if (removeError) {
+              console.error(
+                "Ancien dossier de presse non supprimé :",
+                removeError.message
+              );
+            }
+          }
         }
       }
     }
