@@ -97,8 +97,9 @@ export default function YouTubeEmbed({
       )}
 
       {/* Mention de consentement : le visiteur doit savoir ce que déclenche son
-          clic avant de le faire. */}
-      <span className="absolute inset-x-0 bottom-0 bg-black/70 px-2 py-1 text-[11px] leading-tight text-white/90">
+          clic avant de le faire. Police alignée sur les textes courants du site
+          (globals.css applique Roboto aux <p>), qu'un span n'hérite pas. */}
+      <span className="absolute inset-x-0 bottom-0 bg-black/70 px-2 py-1 font-[roboto] text-[11px] leading-tight text-white/90">
         En lançant la lecture, le lecteur YouTube est chargé et peut déposer des cookies.
       </span>
     </button>
