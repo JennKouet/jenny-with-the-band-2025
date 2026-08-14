@@ -2,6 +2,7 @@
   "name": "jenny-with-the-band-2025",
   "version": "0.1.0",
   "private": true,
+  "packageManager": "yarn@1.22.22",
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "next build",
@@ -23,8 +24,7 @@
     "react-dom": "^19.0.0",
     "react-icons": "^5.5.0",
     "react-player": "^2.16.0",
-    "sharp": "^0.35.3",
-    "yarn": "^1.22.22"
+    "sharp": "^0.35.3"
   },
   "devDependencies": {
     "@eslint/eslintrc": "3.3.6",
