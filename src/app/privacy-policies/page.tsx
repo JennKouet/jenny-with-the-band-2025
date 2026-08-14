@@ -48,12 +48,17 @@ const PrivatePoliciesPage = () => {
                 de consentement ne vous est présentée.
                 </p>
                 <p className="mt-2">
-                Les contenus externes (vidéos YouTube, flux Instagram) ne se chargent
-                <strong> qu’après un clic de votre part</strong>. Tant que vous ne les
-                lancez pas, aucune connexion n’est établie avec ces services et aucun
-                cookie tiers n’est déposé. En cliquant, vous acceptez que le service
-                concerné puisse déposer des cookies, soumis à sa propre politique de
+                Les <strong>vidéos YouTube</strong> ne se chargent qu’après un clic de
+                votre part. Tant que vous n’en lancez pas la lecture, aucune connexion
+                n’est établie avec YouTube. En cliquant, vous acceptez que ce service
+                puisse déposer des cookies, soumis à sa propre politique de
                 confidentialité.
+                </p>
+                <p className="mt-2">
+                Le <strong>flux Instagram</strong> s’affiche directement, car le service
+                qui l’héberge <strong>ne dépose aucun cookie</strong> et n’écrit rien sur
+                votre appareil. Son affichage transmet en revanche votre adresse IP aux
+                serveurs qui fournissent les images (voir la section « Services tiers »).
                 </p>
                 <p className="mt-2">
                 Des cookies strictement nécessaires au fonctionnement du site peuvent être
@@ -83,22 +88,29 @@ const PrivatePoliciesPage = () => {
                 (Google Analytics, Facebook Pixel, reCAPTCHA, etc.).
                 </p>
                 <p className="mt-2">
-                Deux services externes permettent d’afficher nos contenus, et
-                <strong> uniquement si vous choisissez de les activer</strong> :
+                Deux services externes permettent d’afficher nos contenus :
                 </p>
                 <ul className="list-disc list-inside mt-2">
                 <li>
                     <strong>YouTube</strong> (Google Ireland Ltd) pour la lecture des vidéos,
-                    intégré en mode « sans cookie ». Les vignettes des vidéos sont servies
-                    depuis notre propre domaine.
+                    intégré en mode « sans cookie » et chargé uniquement si vous lancez une
+                    vidéo. Les vignettes sont servies depuis notre propre domaine : tant que
+                    vous ne cliquez pas, votre navigateur ne contacte pas Google.
                 </li>
                 <li>
-                    <strong>LightWidget</strong> pour l’affichage du flux Instagram.
+                    <strong>LightWidget</strong> (hébergé par Cloudflare) pour l’affichage du
+                    flux Instagram, et <strong>Meta Platforms Ireland Ltd</strong> qui fournit
+                    les images de ce flux. Ce contenu s’affiche directement : ces services ne
+                    déposent aucun cookie et n’écrivent rien sur votre appareil, mais votre
+                    adresse IP et le type de votre navigateur leur sont transmis, ce qui est
+                    techniquement nécessaire pour vous délivrer les images.
                 </li>
                 </ul>
                 <p className="mt-2">
-                Tant que vous ne cliquez pas, votre navigateur ne contacte pas ces services
-                et ne leur transmet donc ni votre adresse IP ni aucune autre donnée.
+                Ce dernier traitement repose sur notre <strong>intérêt légitime</strong> à
+                présenter notre actualité. Si vous préférez l’éviter, un bloqueur de contenus
+                tiers ou le mode de navigation renforcée de votre navigateur suffit : le reste
+                du site fonctionne normalement sans ce flux.
                 </p>
             </section>
 
