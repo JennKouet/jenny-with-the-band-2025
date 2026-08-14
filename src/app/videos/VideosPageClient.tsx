@@ -5,6 +5,7 @@ import supabase from "@/lib/supabaseClient";
 import type { VideoProps } from "@/types/videos.types";
 import useAuth from "@/app/hooks/useAuth";
 import { toYouTubeEmbedUrl } from "@/lib/youtube";
+import YouTubeEmbed from "@/app/components/_shared/YouTubeEmbed";
 import { adminForm } from "@/app/components/_shared/ui/adminForm";
 
 const VideosPageClient = () => {
@@ -118,7 +119,12 @@ const handleDeleteVideo = async (id: string) => {
                 {!loading && videos.length > 0 ? (
                     videos.map((video) => (
                         <div key={video.id} className="relative group p-4">
-                            <iframe width="100%" height="350" className="w-full h-57.5 md:h-87.5" src={toYouTubeEmbedUrl(video.embedUrl)} title="YouTube video player" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen></iframe>
+                            <YouTubeEmbed
+                                embedUrl={video.embedUrl}
+                                width="100%"
+                                height={350}
+                                className="w-full h-57.5 md:h-87.5"
+                            />
                             {isAuthenticated && (
                                 <button
                                     onClick={() => handleDeleteVideo(video.id)}

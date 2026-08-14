@@ -43,12 +43,24 @@ const PrivatePoliciesPage = () => {
                 <h2 className="text-xl font-semibold mb-2">3. Cookies et traceurs</h2>
                 <p>
                 Notre site n’utilise <strong>aucun cookie ou traceur</strong> à des fins
-                statistiques, publicitaires ou de suivi utilisateur.
+                statistiques, publicitaires ou de suivi utilisateur. Aucun cookie n’est
+                déposé lors de votre simple navigation : c’est pourquoi aucune bannière
+                de consentement ne vous est présentée.
+                </p>
+                <p className="mt-2">
+                Les contenus externes (vidéos YouTube, flux Instagram) ne se chargent
+                <strong> qu’après un clic de votre part</strong>. Tant que vous ne les
+                lancez pas, aucune connexion n’est établie avec ces services et aucun
+                cookie tiers n’est déposé. En cliquant, vous acceptez que le service
+                concerné puisse déposer des cookies, soumis à sa propre politique de
+                confidentialité.
                 </p>
                 <p className="mt-2">
                 Des cookies strictement nécessaires au fonctionnement du site peuvent être
-                utilisés, mais ils ne permettent <strong>pas d’identifier personnellement</strong>
-                les utilisateurs et ne sont <strong>pas conservés</strong> au-delà de votre session.
+                utilisés (notamment pour l’espace d’administration réservé au groupe). Ils
+                ne permettent <strong>pas d’identifier personnellement</strong> les
+                visiteurs et sont <strong>exemptés de consentement</strong> au sens de la
+                réglementation.
                 </p>
             </section>
 
@@ -56,16 +68,37 @@ const PrivatePoliciesPage = () => {
                 <h2 className="text-xl font-semibold mb-2">4. Hébergement et sécurité</h2>
                 <p>
                 Le site est hébergé par un prestataire garantissant un haut niveau de
-                sécurité et de confidentialité. Aucun fichier journal (log) n’est analysé
-                dans une optique d’identification des utilisateurs.
+                sécurité et de confidentialité. Comme tout serveur web, celui-ci peut
+                conserver des journaux de connexion techniques (dont l’adresse IP) à des
+                fins de sécurité et de bon fonctionnement. Ces journaux ne sont
+                <strong> jamais analysés</strong> dans une optique d’identification ou de
+                suivi des visiteurs.
                 </p>
             </section>
 
             <section className="mb-6">
                 <h2 className="text-xl font-semibold mb-2">5. Services tiers</h2>
                 <p>
-                Nous n’utilisons pas de services tiers susceptibles de collecter des données
-                personnelles (tels que Google Analytics, Facebook Pixel, reCAPTCHA, etc.).
+                Nous n’utilisons <strong>aucun outil de mesure d’audience ni de publicité</strong>
+                (Google Analytics, Facebook Pixel, reCAPTCHA, etc.).
+                </p>
+                <p className="mt-2">
+                Deux services externes permettent d’afficher nos contenus, et
+                <strong> uniquement si vous choisissez de les activer</strong> :
+                </p>
+                <ul className="list-disc list-inside mt-2">
+                <li>
+                    <strong>YouTube</strong> (Google Ireland Ltd) pour la lecture des vidéos,
+                    intégré en mode « sans cookie ». Les vignettes des vidéos sont servies
+                    depuis notre propre domaine.
+                </li>
+                <li>
+                    <strong>LightWidget</strong> pour l’affichage du flux Instagram.
+                </li>
+                </ul>
+                <p className="mt-2">
+                Tant que vous ne cliquez pas, votre navigateur ne contacte pas ces services
+                et ne leur transmet donc ni votre adresse IP ni aucune autre donnée.
                 </p>
             </section>
 
@@ -85,8 +118,8 @@ const PrivatePoliciesPage = () => {
                 Pour toute question concernant cette politique de confidentialité, vous
                 pouvez nous contacter à l’adresse suivante :
                 <br />
-                <a href="mailto:votre-email@exemple.com" className="text-blue-600 underline">
-                    votre-email@exemple.com
+                <a href="mailto:contact@jennywiththeband.com" className="text-blue-600 underline">
+                    contact@jennywiththeband.com
                 </a>
                 </p>
             </section>
