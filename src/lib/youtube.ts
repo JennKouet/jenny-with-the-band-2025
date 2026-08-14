@@ -11,6 +11,11 @@ const YOUTUBE_HOSTS = new Set([
 
 const VIDEO_ID = /^[\w-]{11}$/;
 
+// Domaine "no-cookie" de YouTube : il ne dépose pas de cookie publicitaire tant
+// que la vidéo n'est pas lue. Combiné au chargement au clic (voir YouTubeEmbed),
+// il évite au site d'avoir besoin d'une bannière de consentement.
+const EMBED_HOST = 'https://www.youtube-nocookie.com';
+
 /** Convertit "1h2m3s", "90s" ou "90" en nombre de secondes. */
 const parseStart = (value: string | null): number | null => {
   if (!value) return null;
@@ -37,7 +42,7 @@ export function toYouTubeEmbedUrl(input: string | null | undefined): string {
     url = new URL(raw);
   } catch {
     // Pas une URL : peut-être un identifiant collé seul.
-    return VIDEO_ID.test(raw) ? `https://www.youtube.com/embed/${raw}` : raw;
+    return VIDEO_ID.test(raw) ? `${EMBED_HOST}/embed/${raw}` : raw;
   }
 
   if (!YOUTUBE_HOSTS.has(url.hostname)) return raw;
@@ -65,5 +70,25 @@ export function toYouTubeEmbedUrl(input: string | null | undefined): string {
   if (list) params.set('list', list);
 
   const query = params.toString();
-  return `https://www.youtube.com/embed/${id}${query ? `?${query}` : ''}`;
+  return `${EMBED_HOST}/embed/${id}${query ? `?${query}` : ''}`;
+}
+
+/**
+ * Extrait l'identifiant d'une vidéo à partir de n'importe quelle forme de lien.
+ * Renvoie null si le lien n'est pas reconnu.
+ */
+export function getYouTubeVideoId(input: string | null | undefined): string | null {
+  const embed = toYouTubeEmbedUrl(input);
+  const match = embed.match(/\/embed\/([\w-]{11})/);
+  return match ? match[1] : null;
+}
+
+/**
+ * Vignette officielle de la vidéo. Elle est servie par i.ytimg.com, mais passe
+ * par l'optimiseur d'images de Next : c'est le serveur du site qui la récupère,
+ * jamais le navigateur du visiteur. Aucune requête vers Google avant le clic.
+ */
+export function youTubeThumbnailUrl(input: string | null | undefined): string | null {
+  const id = getYouTubeVideoId(input);
+  return id ? `https://i.ytimg.com/vi/${id}/hqdefault.jpg` : null;
 }

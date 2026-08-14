@@ -43,12 +43,29 @@ const PrivatePoliciesPage = () => {
                 <h2 className="text-xl font-semibold mb-2">3. Cookies et traceurs</h2>
                 <p>
                 Notre site n’utilise <strong>aucun cookie ou traceur</strong> à des fins
-                statistiques, publicitaires ou de suivi utilisateur.
+                statistiques, publicitaires ou de suivi utilisateur. Aucun cookie n’est
+                déposé lors de votre simple navigation : c’est pourquoi aucune bannière
+                de consentement ne vous est présentée.
+                </p>
+                <p className="mt-2">
+                Les <strong>vidéos YouTube</strong> ne se chargent qu’après un clic de
+                votre part. Tant que vous n’en lancez pas la lecture, aucune connexion
+                n’est établie avec YouTube. En cliquant, vous acceptez que ce service
+                puisse déposer des cookies, soumis à sa propre politique de
+                confidentialité.
+                </p>
+                <p className="mt-2">
+                Le <strong>flux Instagram</strong> s’affiche directement, car le service
+                qui l’héberge <strong>ne dépose aucun cookie</strong> et n’écrit rien sur
+                votre appareil. Son affichage transmet en revanche votre adresse IP aux
+                serveurs qui fournissent les images (voir la section « Services tiers »).
                 </p>
                 <p className="mt-2">
                 Des cookies strictement nécessaires au fonctionnement du site peuvent être
-                utilisés, mais ils ne permettent <strong>pas d’identifier personnellement</strong>
-                les utilisateurs et ne sont <strong>pas conservés</strong> au-delà de votre session.
+                utilisés (notamment pour l’espace d’administration réservé au groupe). Ils
+                ne permettent <strong>pas d’identifier personnellement</strong> les
+                visiteurs et sont <strong>exemptés de consentement</strong> au sens de la
+                réglementation.
                 </p>
             </section>
 
@@ -56,16 +73,44 @@ const PrivatePoliciesPage = () => {
                 <h2 className="text-xl font-semibold mb-2">4. Hébergement et sécurité</h2>
                 <p>
                 Le site est hébergé par un prestataire garantissant un haut niveau de
-                sécurité et de confidentialité. Aucun fichier journal (log) n’est analysé
-                dans une optique d’identification des utilisateurs.
+                sécurité et de confidentialité. Comme tout serveur web, celui-ci peut
+                conserver des journaux de connexion techniques (dont l’adresse IP) à des
+                fins de sécurité et de bon fonctionnement. Ces journaux ne sont
+                <strong> jamais analysés</strong> dans une optique d’identification ou de
+                suivi des visiteurs.
                 </p>
             </section>
 
             <section className="mb-6">
                 <h2 className="text-xl font-semibold mb-2">5. Services tiers</h2>
                 <p>
-                Nous n’utilisons pas de services tiers susceptibles de collecter des données
-                personnelles (tels que Google Analytics, Facebook Pixel, reCAPTCHA, etc.).
+                Nous n’utilisons <strong>aucun outil de mesure d’audience ni de publicité</strong>
+                (Google Analytics, Facebook Pixel, reCAPTCHA, etc.).
+                </p>
+                <p className="mt-2">
+                Deux services externes permettent d’afficher nos contenus :
+                </p>
+                <ul className="list-disc list-inside mt-2">
+                <li>
+                    <strong>YouTube</strong> (Google Ireland Ltd) pour la lecture des vidéos,
+                    intégré en mode « sans cookie » et chargé uniquement si vous lancez une
+                    vidéo. Les vignettes sont servies depuis notre propre domaine : tant que
+                    vous ne cliquez pas, votre navigateur ne contacte pas Google.
+                </li>
+                <li>
+                    <strong>LightWidget</strong> (hébergé par Cloudflare) pour l’affichage du
+                    flux Instagram, et <strong>Meta Platforms Ireland Ltd</strong> qui fournit
+                    les images de ce flux. Ce contenu s’affiche directement : ces services ne
+                    déposent aucun cookie et n’écrivent rien sur votre appareil, mais votre
+                    adresse IP et le type de votre navigateur leur sont transmis, ce qui est
+                    techniquement nécessaire pour vous délivrer les images.
+                </li>
+                </ul>
+                <p className="mt-2">
+                Ce dernier traitement repose sur notre <strong>intérêt légitime</strong> à
+                présenter notre actualité. Si vous préférez l’éviter, un bloqueur de contenus
+                tiers ou le mode de navigation renforcée de votre navigateur suffit : le reste
+                du site fonctionne normalement sans ce flux.
                 </p>
             </section>
 
@@ -85,8 +130,8 @@ const PrivatePoliciesPage = () => {
                 Pour toute question concernant cette politique de confidentialité, vous
                 pouvez nous contacter à l’adresse suivante :
                 <br />
-                <a href="mailto:votre-email@exemple.com" className="text-blue-600 underline">
-                    votre-email@exemple.com
+                <a href="mailto:contact@jennywiththeband.com" className="text-blue-600 underline">
+                    contact@jennywiththeband.com
                 </a>
                 </p>
             </section>
