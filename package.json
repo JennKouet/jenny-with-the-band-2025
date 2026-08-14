@@ -43,7 +43,6 @@
     "sharp": "^0.35.3",
     "postcss": "^8.5.23",
     "form-data": "^4.0.6",
-    "@typescript-eslint/typescript-estree/minimatch": "9.0.7",
     "@eslint/config-array/minimatch": "10.2.6",
     "js-yaml": "^4.3.0",
     "preact": "^10.26.10",
@@ -51,7 +50,6 @@
     "flatted": "^3.4.2",
     "ws": "^8.21.0",
     "yaml": "^1.10.3",
-    "uuid": "^11.1.1",
-    "@eslint/plugin-kit": "^0.3.4"
+    "uuid": "^11.1.1"
   }
 }
