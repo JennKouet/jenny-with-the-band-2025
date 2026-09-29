@@ -1,5 +1,3 @@
-"use client";
-
 import Link from "next/link";
 import { FaChevronDown } from "react-icons/fa";
 import EditableIframe from "./components/_shared/EditableIframe";
@@ -9,7 +7,7 @@ import NewsListComponent from "./components/news/NewsList";
 import ProductCardComponent from "./components/_shared/ProductCard";
 import InstagramWidgetComponent from "./components/_shared/InstagramWidget";
 
-export default function HomePageClient() {
+export default function HomeContent() {
   return (
     <main
       id="home"
