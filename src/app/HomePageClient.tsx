@@ -35,8 +35,8 @@ export default function HomePageClient() {
             poster="/images/miniature-video-site.webp"
             className="absolute top-0 left-0 h-full w-full object-cover object-[80%_center] md:object-center"
           >
-            {/* webm: léger (~5 Mo), lu par Chrome / Firefox / Edge */}
-            <source src="/images/main-video-web8.webm" type="video/webm" />
+            {/* webm: léger, lu par Chrome / Firefox / Edge */}
+            <source src="/images/main-video-site.webm" type="video/webm" />
             {/* mp4: secours pour Safari / iOS (à déposer dans public/images) */}
             <source src="/images/main-video-site.mp4" type="video/mp4" />
           </video>
