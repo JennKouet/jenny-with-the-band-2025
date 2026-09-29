@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import HomePageClient from "./HomePageClient";
+import HomeContent from "./HomeContent";
 import { getSiteUrl, siteConfig } from "@/lib/site";
 
 export const metadata: Metadata = {
@@ -45,7 +45,7 @@ export default function Home() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(musicGroupJsonLd) }}
       />
-      <HomePageClient />
+      <HomeContent />
     </>
   );
 }
