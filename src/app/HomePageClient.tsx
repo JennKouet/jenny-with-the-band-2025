@@ -1,6 +1,5 @@
 "use client";
 
-import dynamic from "next/dynamic";
 import Link from "next/link";
 import { FaChevronDown } from "react-icons/fa";
 import EditableIframe from "./components/_shared/EditableIframe";
@@ -9,8 +8,6 @@ import TourDates from "./components/_shared/shows/TourDates";
 import NewsListComponent from "./components/news/NewsList";
 import ProductCardComponent from "./components/_shared/ProductCard";
 import InstagramWidgetComponent from "./components/_shared/InstagramWidget";
-
-const ReactPlayer = dynamic(() => import("react-player"), { ssr: false });
 
 export default function HomePageClient() {
   return (
@@ -29,23 +26,20 @@ export default function HomePageClient() {
       />
       <section className="relative w-full h-screen overflow-hidden">
         <div className="absolute inset-x-0 top-0 bottom-0 z-0 overflow-hidden">
-          <ReactPlayer
-            url="/images/main-video-site.mov"
-            playing
+          <video
+            autoPlay
             loop
             muted
-            width="100%"
-            height="100%"
-            className="absolute top-0 left-0"
-            config={{
-              file: {
-                attributes: {
-                  className: "object-[80%_center] md:object-center",
-                  style: { width: "100%", height: "100%", objectFit: "cover" },
-                },
-              },
-            }}
-          />
+            playsInline
+            preload="metadata"
+            poster="/images/miniature-video-site.webp"
+            className="absolute top-0 left-0 h-full w-full object-cover object-[80%_center] md:object-center"
+          >
+            {/* webm: léger (~5 Mo), lu par Chrome / Firefox / Edge */}
+            <source src="/images/main-video-web8.webm" type="video/webm" />
+            {/* mp4: secours pour Safari / iOS (à déposer dans public/images) */}
+            <source src="/images/main-video-site.mp4" type="video/mp4" />
+          </video>
           <div className="absolute top-0 left-0 h-full w-full bg-black/25 md:hidden"></div>
         </div>
 
